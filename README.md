@@ -9,7 +9,8 @@ uniapp-ui
 
 使用
 ====================================
-* 我这个代码是使用[uniapp提供的vue-cli](https://uniapp.dcloud.io/quickstart-cli)方式创建的，
+* 我这个代码是使用[uniapp提供的vue-cli](https://uniapp.dcloud.io/quickstart-cli)方式创建的
+
 * 它也能够使用[HBuilderX](https://uniapp.dcloud.io/quickstart-hx)调试
 
 
