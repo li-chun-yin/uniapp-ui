@@ -85,7 +85,7 @@ module.exports = [
   },
   {
     url: '/article/update',
-    type: 'put',
+    type: 'post',
     response: config => {
       return {
         code: 20000,

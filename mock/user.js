@@ -11,14 +11,14 @@ const tokens = {
 const users = {
   'ex-token': {
     roles: ['user'],
-    user_id: 'user_id',
+    user_id: 'user_id1',
     introduction: '这个用户用来一般的页面测试测试',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     nick: 'general'
   },
   'empty-token': {
     roles: ['user'],
-    user_id: 'user_id',
+    user_id: 'user_id2',
     introduction: '这个用户用来测试用户数据为空的时候的情况',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     nick: 'empty'
@@ -37,13 +37,13 @@ module.exports = [
       // mock error
       if (!token_data) {
         return {
-          code: 60204,
+          code: 999999,
           message: 'Account and password are incorrect.'
         }
       }
 
       return {
-        code: 20000,
+        code: process.env.VUE_APP_CODE_SUCCESS,
         message: 'success',
         data: token_data
       }
@@ -55,19 +55,19 @@ module.exports = [
     url: '/user/info',
     type: 'get',
     response: config => {
-      const token = config.headers['__USER_TOKEN__']
+      const token = config.headers['__user_token__']
       const info = users[token]
 
       // mock error
       if (!info) {
         return {
           code: 5000,
-          message: 'Login failed, unable to get user details.'
+          message: 'Login failed, unable to get user details.' + token
         }
       }
 
       return {
-        code: 20000,
+        code: process.env.VUE_APP_CODE_SUCCESS,
         data: info
       }
     }
@@ -79,7 +79,7 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: process.env.VUE_APP_CODE_SUCCESS,
         data: 'success'
       }
     }

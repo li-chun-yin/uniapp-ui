@@ -7,7 +7,7 @@ module.exports = [
       const { email, type } = config.body
 
       // check
-      const is_first_login = email != 'admin@uni.dev'
+      const is_first_login = email != 'ex@uni.dev'
 
       return {
         code: 20000,
