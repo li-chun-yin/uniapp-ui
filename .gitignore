@@ -2,9 +2,6 @@
 node_modules/
 unpackage/
 dist/
-.env.development
-.env.production
-
 
 # local env files
 .env.local
