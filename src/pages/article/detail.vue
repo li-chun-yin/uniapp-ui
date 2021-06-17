@@ -1,6 +1,5 @@
 <template>
 	<view class="wrap">
-		<u-navbar :title="article.title"></u-navbar>
 		<view class="content">
 			<view class="uni-title uni-h1 u-line-1 u-text-center"><text>{{article.title}}</text></view>
 			<u-gap height="10" bg-color="#DDD" margin-top="10" margin-bottom="10"></u-gap>
