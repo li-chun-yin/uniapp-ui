@@ -103,6 +103,7 @@ export default {
 				return this.$u.toast('倒计时结束后再发送');
 			}
 
+			this.captcha.is_sending = true;
 			captchaApi({
 				type: 'login',
 				email: this.form.email
