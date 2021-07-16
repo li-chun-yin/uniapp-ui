@@ -11,7 +11,7 @@ uniapp-ui
 ====================================
 * 我这个代码是使用[uniapp提供的vue-cli](https://uniapp.dcloud.io/quickstart-cli)方式创建的
 
-* 它也能够使用[HBuilderX](https://uniapp.dcloud.io/quickstart-hx)调试
+* 代码拉去以后需要配置src/manifest.json和srcpages.json，可以参考src/manifest.json.default和srcpages.json.default
 
 
 ```
