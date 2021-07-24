@@ -15,9 +15,7 @@ export function loginApi(data) {
         nick: data.nick,
       },
       success: (res) => {
-        if(res.data.code == 20000){
-          setToken(res.data.data.token)
-        }
+        setToken(res.data.data.token)
         resolve(res.data)
       },
       fail: (err)=>{
@@ -36,7 +34,7 @@ export function infoApi(data) {
     if(user){
       console.log("infoApi user:", user)
       resolve({
-        code: 20000,
+        code: process.env.VUE_APP_CODE_SUCCESS,
         type: 'local',
         data: user
       })
@@ -46,9 +44,7 @@ export function infoApi(data) {
       url: '/user/info',
       method: 'get',
       success: (res) => {
-        if(res.data.code == 20000){
-          setUserInfo(res.data.data)
-        }
+        setUserInfo(res.data.data)
         resolve(res.data)
       },
       fail: (err)=>{
@@ -67,9 +63,7 @@ export function logoutApi(data) {
       url: '/user/logout',
       method: 'post',
       success: (res) => {
-        if(res.data.code == 20000){
-          logoutSyncStorage()
-        }
+        logoutSyncStorage()
         resolve(res.data)
       },
       fail: (err)=>{
