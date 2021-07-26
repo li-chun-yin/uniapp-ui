@@ -4,10 +4,7 @@
 //			"path": "pages/test/test-ajax-prop"
 //		},
 		{
-			"path": "pages/article/index",
-			"style": {
-				"navigationStyle": "custom"
-			}
+			"path": "pages/article/index"
 		},
 		{
 			"path": "pages/article/detail",
@@ -18,13 +15,13 @@
 		{
 			"path": "pages/user/login",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "User Login"
 			}
 		},
 		{
 			"path": "pages/user/center",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "User Center"
 			}
 		},
 		{

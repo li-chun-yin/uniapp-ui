@@ -24,3 +24,5 @@ yarn-error.log*
 
 src/pages.json
 src/manifest.json
+src/pages.json.local
+src/manifest.json.local
