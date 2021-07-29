@@ -2,7 +2,9 @@
 	<view class="">
 		<view class="center">
 			<view class="logo" :hover-class="is_login ? '' : 'logo-hover'">
-				<image class="logo-img" :src="user.avatar"></image>
+				<navigator style="width:100%" :url="is_login ? 'avatar' : 'login?totype=switchTab&tourl=/pages/user/center'">
+					<image class="logo-img" :src="user.avatar"></image>
+				</navigator>
 				<view class="logo-title" v-if="is_login">
 					<text class="user-name">{{ user.nick }}</text>
 				</view>
