@@ -44,7 +44,7 @@
 </template>
 
 <script>
-	import { isLogined, clearToken, getToken } from '@/utils/auth'
+	import { isLogined, clearToken, getToken, setUserInfo } from '@/utils/auth'
 	import { infoApi, logoutApi, avatarApi } from '@/api/user'
 	const init_user = {
 		avatar: '../../static/img/logo.png',
@@ -98,6 +98,7 @@
 							const res = JSON.parse(e.data)
 							avatarApi({avatar_id: res.data.id}).then(res=>{
 								this.user.avatar = path
+								setUserInfo(this.user)
 							})
 						}
 					})
