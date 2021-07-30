@@ -20,7 +20,7 @@ uni.addInterceptor('request', {
         showCancel: false,
         success: res => {
           uni.navigateTo({
-            url: 'pages/user/login?totype=back'
+            url: '/pages/user/login?totype=back'
           })
         }
       });

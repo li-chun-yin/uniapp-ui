@@ -63,13 +63,19 @@
 				}
 			}
 		},
-		created() {
+		onShow() {
+			console.log('onShow')
 			this.loadData()
+		},
+		onLoad() {
+			console.log('onload')
 			this.listenChooseAvatar()
 		},
 		methods: {
 			loadData() {
 				this.is_login = isLogined()
+				this.upload.header.__USER_TOKEN__ = getToken()
+				console.log(this.is_login)
 				if(this.is_login == false){
 					return false
 				}
@@ -85,7 +91,7 @@
 					// 可以在此上传到服务端
 					uni.uploadFile({
 						url: this.upload.action,
-						header: this.upload_header,
+						header: this.upload.header,
 						filePath: path,
 						name: 'file',
 						success: (e) => {
@@ -117,6 +123,7 @@
 							totype: 'switchTab',
 							tourl: '/pages/user/center'
 					})
+					return
 				}
 				this.$u.route('/pages/user/avatar/u-avatar-cropper', {
 					destWidth: '200',
