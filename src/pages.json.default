@@ -25,6 +25,12 @@
 			}
 		},
 		{
+			"path": "pages/user/avatar/u-avatar-cropper",
+			"style": {
+				"navigationBarTitleText": "User Avatar"
+			}
+		},
+		{
 			"path": "pages/user/article/lists",
 			"style": {
 				"navigationStyle": "custom"

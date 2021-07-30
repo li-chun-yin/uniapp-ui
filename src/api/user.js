@@ -57,6 +57,30 @@ export function infoApi(data) {
   });
 }
 
+export function avatarApi(data) {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/user/avatar',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        avatar_id: data.avatar_id,
+      },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  });
+}
+
 export function logoutApi(data) {
   return new Promise((resolve, reject) => {
     uni.request({

@@ -73,6 +73,18 @@ module.exports = [
     }
   },
 
+  // user avatar
+  {
+    url: '/user/avatar',
+    type: 'post',
+    response: _ => {
+      return {
+        code: process.env.VUE_APP_CODE_SUCCESS,
+        data: 'success'
+      }
+    }
+  },
+
   // user logout
   {
     url: '/user/logout',

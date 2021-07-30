@@ -2,9 +2,7 @@
 	<view class="">
 		<view class="center">
 			<view class="logo" :hover-class="is_login ? '' : 'logo-hover'">
-				<navigator style="width:100%" :url="is_login ? 'avatar' : 'login?totype=switchTab&tourl=/pages/user/center'">
-					<image class="logo-img" :src="user.avatar"></image>
-				</navigator>
+				<image class="logo-img" :src="user.avatar" @tap="doChooseAvatar"></image>
 				<view class="logo-title" v-if="is_login">
 					<text class="user-name">{{ user.nick }}</text>
 				</view>
@@ -46,8 +44,8 @@
 </template>
 
 <script>
-	import { isLogined, clearToken } from '@/utils/auth'
-	import { infoApi, logoutApi } from '@/api/user'
+	import { isLogined, clearToken, getToken } from '@/utils/auth'
+	import { infoApi, logoutApi, avatarApi } from '@/api/user'
 	const init_user = {
 		avatar: '../../static/img/logo.png',
 		nick: ''
@@ -56,11 +54,18 @@
 		data() {
 			return {
 				user: Object.assign({}, init_user),
-        is_login: false
+        is_login: false,
+				upload: {
+					action: process.env.VUE_APP_UPLOAD_URL,
+					header: {
+						__USER_TOKEN__: getToken()
+					}
+				}
 			}
 		},
-		onShow(){
+		created() {
 			this.loadData()
+			this.listenChooseAvatar()
 		},
 		methods: {
 			loadData() {
@@ -73,6 +78,25 @@
 					this.user = res.data
 				})
 			},
+			listenChooseAvatar(){
+				// 监听从裁剪页发布的事件，获得裁剪结果
+				uni.$on('uAvatarCropper', (path) => {
+					this.user.avatar = path
+					// 可以在此上传到服务端
+					uni.uploadFile({
+						url: this.upload.action,
+						header: this.upload_header,
+						filePath: path,
+						name: 'file',
+						success: (e) => {
+							const res = JSON.parse(e.data)
+							avatarApi({avatar_id: res.data.id}).then(res=>{
+								this.user.avatar = path
+							})
+						}
+					})
+				})
+			},
 			doLogout(){
 				logoutApi().then(res => {
 					console.log('DoLogout.callback:', res)
@@ -82,8 +106,22 @@
 						console.log('DoLogout.init_user:', init_user)
 						this.user = init_user
 					}else{
-						this.$u.toast('退出失败');
+						this.$u.toast('退出失败')
 					}
+				})
+			},
+			doChooseAvatar(){
+				console.log('doChooseAvatar')
+				if(!this.is_login){
+					this.$u.route('/pages/user/login', {
+							totype: 'switchTab',
+							tourl: '/pages/user/center'
+					})
+				}
+				this.$u.route('/pages/user/avatar/u-avatar-cropper', {
+					destWidth: '200',
+					rectWidth: '200',
+					fileType: 'png'
 				})
 			}
     }
