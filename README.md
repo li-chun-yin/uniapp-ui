@@ -5,7 +5,7 @@ uniapp-ui
 和[uview-ui](https://www.uviewui.com/)
 的前端H5 UI（虽然uniapp支持编译成多个不同类型的客户端的代码，但是我还没有测试）
 
-* 目前，这个UI代码有含有登录、文章（列表、表单、详情）、图片上传、富文本编辑等UI元素。
+* 目前，这个UI代码有含有登录、文章（列表、表单、详情）、图片上传、头像裁剪、富文本编辑等UI元素。
 
 使用
 ====================================
@@ -18,6 +18,10 @@ uniapp-ui
 git clone https://github.com/li-chun-yin/uniapp-ui.git
 
 npm install
+
+cp src/pages.json.default src/pages.json
+
+cp src/manifest.json.default src/manifest.json
 
 npm run dev:h5
 ```
