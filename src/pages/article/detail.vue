@@ -10,6 +10,17 @@
 				<text class="createtime-text">日期:{{article.createtime|date('yyyy-mm-dd hh:ss')}}</text>
 			</view>
 		</view>
+		<view class="reply">
+			<u-form :model="form" ref="uForm">
+				<u-form-item>
+					<u-input type="text" placeholder="请输入验证码" />
+					<view slot="right">
+						<u-button>发送</u-button>
+					</view>
+				</u-form-item>
+			</u-form>
+		</view>
+		<view class="comment">热门评论</view>
 		<view class="comment" v-for="(comment, index) in comments" :key="comment.seq">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
@@ -80,6 +91,15 @@ export default {
 <style scoped lang="scss">
 .author-text, createtime-text {
 	padding: 0 10rpx;
+}
+
+.reply {
+	position: fixed;
+	bottom:0;
+	left:0;
+	background: #FFFFFF;
+	width: 100%;
+	border: 1px #ccc solid;
 }
 
 .comment {
