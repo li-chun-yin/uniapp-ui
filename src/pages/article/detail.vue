@@ -10,30 +10,29 @@
 				<text class="createtime-text">日期:{{article.createtime|date('yyyy-mm-dd hh:ss')}}</text>
 			</view>
 		</view>
-		<view class="comment" v-for="(res, index) in commentList" :key="res.id">
-			<view class="left"><image :src="res.url" mode="aspectFill"></image></view>
+		<view class="comment" v-for="(comment, index) in comments" :key="comment.seq">
+			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
 				<view class="top">
-					<view class="name">{{ res.name }}</view>
-					<view class="like" :class="{ highlight: res.isLike }">
-						<view class="num">{{ res.likeNum }}</view>
-						<u-icon v-if="!res.isLike" name="thumb-up" :size="30" color="#9a9a9a" @click="getLike(index)"></u-icon>
-						<u-icon v-if="res.isLike" name="thumb-up-fill" :size="30" @click="getLike(index)"></u-icon>
+					<view class="name">{{ comment.user_nick }}</view>
+					<view class="like highlight">
+						<view class="num">{{ comment.like_num }}</view>
+						<u-icon name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
 					</view>
 				</view>
-				<view class="content">{{ res.contentText }}</view>
+				<view class="content">{{ comment.content }}</view>
 				<view class="reply-box">
-					<view class="item" v-for="(item, index) in res.replyList" :key="item.index">
-						<view class="username">{{ item.name }}</view>
-						<view class="text">{{ item.contentStr }}</view>
+					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
+						<view class="username">{{ comment.user_nick }}</view>
+						<view class="text">{{ reply.content }}</view>
 					</view>
-					<view class="all-reply" @tap="toAllReply" v-if="res.replyList != undefined">
-						共{{ res.allReply }}条回复
+					<view class="all-reply" @tap="toAllReply" v-if="comment.reply_num > comment.replys.length">
+						共{{ comment.reply_num }}条回复
 						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 					</view>
 				</view>
 				<view class="bottom">
-					{{ res.date }}
+					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
 					<view class="reply">回复</view>
 				</view>
 			</view>
@@ -43,11 +42,15 @@
 
 <script>
 import { detailApi } from '@/api/article'
+import { indexApi as commentIndexApi } from '@/api/article-comment'
+
 export default {
 	data() {
 		return {
 			request: {},
-			article: {}
+			article: {},
+			comments: [],
+			comment_num: 5
 		}
 	},
 	onLoad(e) {
@@ -58,6 +61,16 @@ export default {
 		loadData(){
 			detailApi(this.request).then(res => {
 				this.article = res.data
+				this.loadComments()
+			})
+		},
+		loadComments(){
+			commentIndexApi({
+				article_seq: this.article.seq,
+				page: 1,
+				limit: this.comment_num
+			}).then(res => {
+				this.comments	= res.data.items
 			})
 		}
 	}

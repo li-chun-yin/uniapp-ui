@@ -5,11 +5,13 @@ const upload = require('./upload')
 const user = require('./user')
 const email = require('./email')
 const article = require('./article')
+const article_comment = require('./article-comment')
 
 const mocks = [
   ...upload,
   ...user,
   ...article,
+  ...article_comment,
   ...email
 ]
 
