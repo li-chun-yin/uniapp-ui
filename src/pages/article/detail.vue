@@ -42,8 +42,9 @@
 				</view>
 			</view>
 		</view>
+		<u-line margin="60rpx 0"/><!-- The bottom of the page left empty -->
 		<view class="reply-from">
-			<u-popup v-model="show_comment_form" mode="bottom">
+			<u-popup v-model="show_comment_form" mode="bottom"  safe-area-inset-bottom>
 				<view class="wrap">
 					<u-form ref="commentForm">
 						<u-form-item class="reply-input">
