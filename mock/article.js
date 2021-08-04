@@ -16,6 +16,7 @@ for (let i = 0; i < count; i++) {
     image: {url: image_uri},
     'status|1': ['published', 'draft'],
     pv: '@integer(300, 5000)',
+    comment_num: '@integer(0, 999)',
     createtime: +Mock.Random.date('T'),
     updatetime: +Mock.Random.date('T')
   }))

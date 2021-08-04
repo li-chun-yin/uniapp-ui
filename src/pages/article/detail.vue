@@ -10,16 +10,6 @@
 				<text class="createtime-text">日期:{{article.createtime|date('yyyy-mm-dd hh:ss')}}</text>
 			</view>
 		</view>
-		<view class="reply">
-			<u-form :model="form" ref="uForm">
-				<u-form-item>
-					<u-input type="text" placeholder="请输入验证码" />
-					<view slot="right">
-						<u-button>发送</u-button>
-					</view>
-				</u-form-item>
-			</u-form>
-		</view>
 		<view class="comment">热门评论</view>
 		<view class="comment" v-for="(comment, index) in comments" :key="comment.seq">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
@@ -32,36 +22,72 @@
 					</view>
 				</view>
 				<view class="content">{{ comment.content }}</view>
+				<view class="bottom">
+					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+					<view class="reply" @tap="popupCommentFormWin(comment.seq)">回复</view>
+				</view>
 				<view class="reply-box">
 					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
 						<view class="username">{{ comment.user_nick }}</view>
 						<view class="text">{{ reply.content }}</view>
+						<view class="bottom">
+							{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+							<view class="reply" @tap="popupCommentFormWin(reply.seq)">回复</view>
+						</view>
 					</view>
 					<view class="all-reply" @tap="toAllReply" v-if="comment.reply_num > comment.replys.length">
 						共{{ comment.reply_num }}条回复
 						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 					</view>
 				</view>
-				<view class="bottom">
-					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
-					<view class="reply">回复</view>
-				</view>
 			</view>
+		</view>
+		<view class="reply-from">
+			<u-popup v-model="show_comment_form" mode="bottom">
+				<view class="wrap">
+					<u-form ref="commentForm">
+						<u-form-item class="reply-input">
+							<u-input type="textarea" v-model="comment_form.content" maxlength="655535" border />
+							<view slot="right">
+								<u-button type="primary" plain @tap="doSendComment()" >发送</u-button>
+							</view>
+						</u-form-item>
+					</u-form>
+				</view>
+			</u-popup>
+			<u-button class="reply-btn" @click="popupCommentFormWin(0)">参与评论</u-button>
+			<u-button class="reply-num" plain>
+				<u-icon name="chat" size="60"></u-icon>
+				<u-badge class="badge" size="mini" :count="article.comment_num" show-zero :overflow-count="99" :offset="[0,0]"></u-badge>
+			</u-button>
+			<u-button class="like">
+				<u-icon name="heart" size="60"></u-icon>
+			</u-button>
+			<u-button class="share">
+				<u-icon name="share" size="60"></u-icon>
+			</u-button>
 		</view>
 	</view>
 </template>
 
 <script>
 import { detailApi } from '@/api/article'
-import { indexApi as commentIndexApi } from '@/api/article-comment'
+import { indexApi as commentIndexApi, createApi as commentCreateApi } from '@/api/article-comment'
 
+const init_comment_form = {
+	article_seq: 0,
+	parent_seq: 0,
+	content: ''
+}
 export default {
 	data() {
 		return {
 			request: {},
 			article: {},
 			comments: [],
-			comment_num: 5
+			comment_limit: 5,
+			show_comment_form: false,
+			comment_form: Object.assign({}, init_comment_form)
 		}
 	},
 	onLoad(e) {
@@ -79,9 +105,22 @@ export default {
 			commentIndexApi({
 				article_seq: this.article.seq,
 				page: 1,
-				limit: this.comment_num
+				limit: this.comment_limit
 			}).then(res => {
 				this.comments	= res.data.items
+			})
+		},
+		popupCommentFormWin(parent_seq) {
+			this.show_comment_form = true
+			this.comment_form.article_seq = this.article.seq
+			this.comment_form.parent_seq = parent_seq
+		},
+		doSendComment() {
+			commentCreateApi(this.comment_form).then(res=>{
+				console.log(res)
+				this.show_comment_form = false
+				this.comment_form	= Object.assign({}, init_comment_form)
+				this.$u.toast('评论成功');
 			})
 		}
 	}
@@ -93,13 +132,46 @@ export default {
 	padding: 0 10rpx;
 }
 
-.reply {
+.reply-from {
 	position: fixed;
 	bottom:0;
 	left:0;
 	background: #FFFFFF;
 	width: 100%;
-	border: 1px #ccc solid;
+	display:flex;
+	display:-webkit-flex;
+	padding: 35rpx;
+
+	.reply-btn {
+		background: #f3f4f6;
+		color: #606266;
+		flex: 1;
+	}
+
+	.reply-num {
+		margin-left: 10rpx;
+		padding: 0 10rpx;
+	}
+
+	.reply-num:after {
+		border: 0;
+	}
+
+	.like {
+		padding: 0 10rpx;
+	}
+
+	.like:after {
+		border: 0;
+	}
+
+	.share {
+		padding: 0 10rpx;
+	}
+
+	.share:after {
+		border: 0;
+	}
 }
 
 .comment {

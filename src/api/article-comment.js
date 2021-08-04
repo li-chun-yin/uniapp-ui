@@ -54,6 +54,7 @@ export function createApi(data) {
       },
       data: {
         article_seq: data.article_seq,
+        parent_seq: data.parent_seq,
         content: data.content
       },
       success: (res) => {
