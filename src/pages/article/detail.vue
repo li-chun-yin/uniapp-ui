@@ -10,6 +10,7 @@
 				<text class="createtime-text">日期:{{article.createtime|date('yyyy-mm-dd hh:ss')}}</text>
 			</view>
 		</view>
+		<view class="comment">我参与的评论</view>
 		<view class="comment">热门评论</view>
 		<view class="comment" v-for="(comment, index) in comments" :key="comment.seq">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
@@ -35,7 +36,7 @@
 							<view class="reply" @tap="popupCommentFormWin(reply.seq)">回复</view>
 						</view>
 					</view>
-					<view class="all-reply" @tap="toAllReply" v-if="comment.reply_num > comment.replys.length">
+					<view class="all-reply" @tap="'toAllReply'(comment.seq)" v-if="comment.reply_num > comment.replys.length">
 						共{{ comment.reply_num }}条回复
 						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 					</view>
@@ -44,11 +45,11 @@
 		</view>
 		<u-line margin="60rpx 0"/><!-- The bottom of the page left empty -->
 		<view class="reply-from">
-			<u-popup v-model="show_comment_form" mode="bottom"  safe-area-inset-bottom>
+			<u-popup v-model="show_comment_form" mode="bottom" safe-area-inset-bottom>
 				<view class="wrap">
-					<u-form ref="commentForm">
-						<u-form-item class="reply-input">
-							<u-input type="textarea" v-model="comment_form.content" maxlength="655535" border />
+					<u-form ref="commentForm" :model="comment_form">
+						<u-form-item class="reply-input" prop="content">
+							<u-input type="textarea" v-model="comment_form.content" maxlength="65535" border />
 							<view slot="right">
 								<u-button type="primary" plain @tap="doSendComment()" >发送</u-button>
 							</view>
@@ -56,8 +57,8 @@
 					</u-form>
 				</view>
 			</u-popup>
-			<u-button class="reply-btn" @click="popupCommentFormWin(0)">参与评论</u-button>
-			<u-button class="reply-num" plain>
+			<u-button class="reply-btn" @tap="popupCommentFormWin(0)">参与评论</u-button>
+			<u-button class="reply-num">
 				<u-icon name="chat" size="60"></u-icon>
 				<u-badge class="badge" size="mini" :count="article.comment_num" show-zero :overflow-count="99" :offset="[0,0]"></u-badge>
 			</u-button>
@@ -65,7 +66,7 @@
 				<u-icon name="heart" size="60"></u-icon>
 			</u-button>
 			<u-button class="share">
-				<u-icon name="share" size="60"></u-icon>
+				<u-icon name="share" size="60" @tap="doShare()"></u-icon>
 			</u-button>
 		</view>
 	</view>
@@ -88,7 +89,14 @@ export default {
 			comments: [],
 			comment_limit: 5,
 			show_comment_form: false,
-			comment_form: Object.assign({}, init_comment_form)
+			comment_form: Object.assign({}, init_comment_form),
+			rules: {
+				content: [{
+					required: true,
+					type: 'string',
+					message: '请输入评论内容'
+				}]
+			}
 		}
 	},
 	onLoad(e) {
@@ -116,13 +124,27 @@ export default {
 			this.comment_form.article_seq = this.article.seq
 			this.comment_form.parent_seq = parent_seq
 		},
+		validate(){
+			let verify = false
+			this.$refs.commentForm.setRules(this.rules)
+			this.$refs.commentForm.validate(valid => {
+				verify = valid
+			})
+			return verify
+		},
 		doSendComment() {
+			if(this.validate() == false){
+				return false
+			}
 			commentCreateApi(this.comment_form).then(res=>{
 				console.log(res)
 				this.show_comment_form = false
 				this.comment_form	= Object.assign({}, init_comment_form)
-				this.$u.toast('评论成功');
+				this.$u.toast('评论成功')
 			})
+		},
+		doShare() {
+			this.$u.toast('请使用客户端自带的分享功能.')
 		}
 	}
 };
