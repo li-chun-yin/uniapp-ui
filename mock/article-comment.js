@@ -24,9 +24,11 @@ for (let i = 0; i < count; i++) {
     for(let j = 0; j <= reply_lists_num - 1; j++){
       replys.push(Mock.mock({
         seq: '@increment',
+        parent_seq: '@integer(0, 10)',
         user_nick: '@first',
         user_avatar: image_uri,
-        content: '@cparagraph(1)',
+        to_user: '@first',
+        content: '@cparagraph(1)',        
         like_num: '@integer(300, 5000)',
         createtime: +Mock.Random.date('T'),
         updatetime: +Mock.Random.date('T')
@@ -52,18 +54,23 @@ module.exports = [
     url: '/article-comment/index',
     type: 'get',
     response: config => {
-      const { title, page = 1, limit = 20, sort } = config.query
+      const { title, page = 1, limit = 20, request_type, sort } = config.query
 
       let mockList = List.filter(item => {
         if (title && item.title.indexOf(title) < 0) return false
         return true
       })
 
+      let limit_z = limit
+      if(request_type == 'MY_COMMENT'){
+        limit_z = Math.round(Math.random())
+      }
+
       if (sort === '-seq') {
         mockList = mockList.reverse()
       }
 
-      let pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+      let pageList = mockList.filter((item, index) => index < limit_z * page && index >= limit_z * (page - 1))
       let total   = mockList.length
 
       const token = config.headers['__USER_TOKEN__']

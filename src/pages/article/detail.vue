@@ -10,9 +10,8 @@
 				<text class="createtime-text">日期:{{article.createtime|date('yyyy-mm-dd hh:ss')}}</text>
 			</view>
 		</view>
-		<view class="comment">我参与的评论</view>
-		<view class="comment">热门评论</view>
-		<view class="comment" v-for="(comment, index) in comments" :key="comment.seq">
+		<view class="comment" v-if="my_comments.length">我的评论</view>
+		<view class="comment" v-for="(comment, index) in my_comments" :key="'my_' +comment.seq">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
 				<view class="top">
@@ -30,7 +29,39 @@
 				<view class="reply-box">
 					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
 						<view class="username">{{ comment.user_nick }}</view>
-						<view class="text">{{ reply.content }}</view>
+						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
+						<view class="bottom">
+							{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+							<view class="reply" @tap="popupCommentFormWin(reply.seq)">回复</view>
+						</view>
+					</view>
+					<view class="all-reply" @tap="'toAllReply'(comment.seq)" v-if="comment.reply_num > comment.replys.length">
+						共{{ comment.reply_num }}条回复
+						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="comment">热门评论</view>
+		<view class="comment" v-for="(comment, index) in hot_comments" :key="comment.seq">
+			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
+			<view class="right">
+				<view class="top">
+					<view class="name">{{ comment.user_nick }}</view>
+					<view class="like highlight">
+						<view class="num">{{ comment.like_num }}</view>
+						<u-icon name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
+					</view>
+				</view>
+				<view class="content">{{ comment.content }}</view>
+				<view class="bottom">
+					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+					<view class="reply" @tap="popupCommentFormWin(comment.seq)">回复</view>
+				</view>
+				<view class="reply-box">
+					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
+						<view class="username">{{ comment.user_nick }}</view>
+						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
 						<view class="bottom">
 							{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
 							<view class="reply" @tap="popupCommentFormWin(reply.seq)">回复</view>
@@ -63,7 +94,7 @@
 				<u-badge class="badge" size="mini" :count="article.comment_num" show-zero :overflow-count="99" :offset="[0,0]"></u-badge>
 			</u-button>
 			<u-button class="like">
-				<u-icon name="heart" size="60"></u-icon>
+				<u-icon name="heart" size="60" @tap="doLike()"></u-icon>
 			</u-button>
 			<u-button class="share">
 				<u-icon name="share" size="60" @tap="doShare()"></u-icon>
@@ -74,6 +105,7 @@
 
 <script>
 import { detailApi } from '@/api/article'
+import { infoApi } from '@/api/user'
 import { indexApi as commentIndexApi, createApi as commentCreateApi } from '@/api/article-comment'
 
 const init_comment_form = {
@@ -84,10 +116,12 @@ const init_comment_form = {
 export default {
 	data() {
 		return {
+			user: {},
 			request: {},
 			article: {},
-			comments: [],
-			comment_limit: 5,
+			hot_comments: [],
+			hot_limit: 5,
+			my_comments: [],
 			show_comment_form: false,
 			comment_form: Object.assign({}, init_comment_form),
 			rules: {
@@ -98,6 +132,9 @@ export default {
 				}]
 			}
 		}
+	},
+	onShow() {
+		this.loadUserInfo()
 	},
 	onLoad(e) {
 		this.request = e
@@ -110,13 +147,27 @@ export default {
 				this.loadComments()
 			})
 		},
-		loadComments(){
+		loadUserInfo() {
+			infoApi().then(res => {
+				console.log('USER-CENTER LoadData:', res)
+				this.user = res.data
+			})
+		},
+		loadComments() {
 			commentIndexApi({
 				article_seq: this.article.seq,
 				page: 1,
-				limit: this.comment_limit
+				limit: this.hot_limit
 			}).then(res => {
-				this.comments	= res.data.items
+				this.hot_comments	= res.data.items
+			})
+			commentIndexApi({
+				article_seq: this.article.seq,
+				request_type: 'MY_COMMENT',
+				page: 1,
+				limit: 9999999999 // 需要所有自己发布的评论
+			}).then(res => {
+				this.my_comments	= res.data.items
 			})
 		},
 		popupCommentFormWin(parent_seq) {
@@ -142,6 +193,9 @@ export default {
 				this.comment_form	= Object.assign({}, init_comment_form)
 				this.$u.toast('评论成功')
 			})
+		},
+		doLike() {
+			this.$u.toast('喜欢功能正在开发.')
 		},
 		doShare() {
 			this.$u.toast('请使用客户端自带的分享功能.')
@@ -249,6 +303,10 @@ export default {
 				.username {
 					font-size: 24rpx;
 					color: #999999;
+				}
+
+				.text .to-user {
+					color: #5677fc;
 				}
 			}
 			.all-reply {
