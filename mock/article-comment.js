@@ -29,6 +29,7 @@ for (let i = 0; i < count; i++) {
         user_avatar: image_uri,
         to_user: '@first',
         content: '@cparagraph(1)',        
+        need_expand: true, // '@boolean',  //是否需要展开内容
         like_num: '@integer(300, 5000)',
         createtime: +Mock.Random.date('T'),
         updatetime: +Mock.Random.date('T')
@@ -41,6 +42,7 @@ for (let i = 0; i < count; i++) {
     user_nick: '@first',
     user_avatar: image_uri,
     content: '@csentence(1,50)',
+    need_expand: true, // '@boolean', //是否需要展开内容
     like_num: '@integer(300, 5000)',
     createtime: +Mock.Random.date('T'),
     updatetime: +Mock.Random.date('T'),
@@ -95,6 +97,8 @@ module.exports = [
       const { seq } = config.query
       for (const item of List) {
         if (item.seq === +seq) {
+          item.need_expand = false
+          item.content = 'detail' + item.content
           return {
             code: 20000,
             data: item

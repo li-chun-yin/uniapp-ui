@@ -7,6 +7,7 @@ export function indexApi(data) {
       method: 'get',
       data: {
         article_seq: data.article_seq,
+        parent_seq: data.parent_seq,
         request_type: data.request_type,
         page: data.page,
         limit: data.limit

@@ -11,23 +11,26 @@
 			</view>
 		</view>
 		<view class="comment" v-if="my_comments.length">我的评论</view>
-		<view class="comment" v-for="(comment, index) in my_comments" :key="'my_' +comment.seq">
+		<view class="comment" v-for="(comment, index) in my_comments" :key="'my_comments_' +index">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
 				<view class="top">
 					<view class="name">{{ comment.user_nick }}</view>
 					<view class="like highlight">
 						<view class="num">{{ comment.like_num }}</view>
-						<u-icon name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
+						<u-icon name="thumb-up" :size="30"></u-icon>
 					</view>
 				</view>
-				<view class="content">{{ comment.content }}</view>
+				<view class="content">
+					{{ comment.content }}
+					<text class="expand" @tap="doExpandContent(comment)" v-if="comment.need_expand == true">+展开</text>
+				</view>
 				<view class="bottom">
 					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
 					<view class="reply" @tap="popupCommentFormWin(comment.seq)">回复</view>
 				</view>
 				<view class="reply-box">
-					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
+					<view class="item" v-for="(reply, key) in comment.replys" :key="'my_comments_replys_' + key">
 						<view class="username">{{ comment.user_nick }}</view>
 						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
 						<view class="bottom">
@@ -43,23 +46,26 @@
 			</view>
 		</view>
 		<view class="comment">热门评论</view>
-		<view class="comment" v-for="(comment, index) in hot_comments" :key="comment.seq">
+		<view class="comment" v-for="(comment, index) in hot_comments" :key="'hot_comments_' + index">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
 				<view class="top">
 					<view class="name">{{ comment.user_nick }}</view>
 					<view class="like highlight">
 						<view class="num">{{ comment.like_num }}</view>
-						<u-icon name="thumb-up" :size="30" color="#9a9a9a"></u-icon>
+						<u-icon name="thumb-up" :size="30"></u-icon>
 					</view>
 				</view>
-				<view class="content">{{ comment.content }}</view>
+				<view class="content">
+					{{ comment.content }}
+					<text class="expand" @tap="doExpandContent(comment)" v-if="comment.need_expand == true">+展开</text>
+				</view>
 				<view class="bottom">
 					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
 					<view class="reply" @tap="popupCommentFormWin(comment.seq)">回复</view>
 				</view>
 				<view class="reply-box">
-					<view class="item" v-for="(reply, key) in comment.replys" :key="reply.seq">
+					<view class="item" v-for="(reply, key) in comment.replys" :key="'hot_comments_reply_' + key">
 						<view class="username">{{ comment.user_nick }}</view>
 						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
 						<view class="bottom">
@@ -106,7 +112,11 @@
 <script>
 import { detailApi } from '@/api/article'
 import { infoApi } from '@/api/user'
-import { indexApi as commentIndexApi, createApi as commentCreateApi } from '@/api/article-comment'
+import { 
+	indexApi as commentIndexApi,
+	createApi as commentCreateApi,
+	detailApi as commentDetailApi
+} from '@/api/article-comment'
 
 const init_comment_form = {
 	article_seq: 0,
@@ -182,6 +192,15 @@ export default {
 				verify = valid
 			})
 			return verify
+		},
+		doExpandContent(comment) {
+			commentDetailApi({
+				seq: comment.seq
+			}).then(res=>{
+				for(let i in res.data ){
+					comment[i] = res.data[i]
+				}
+			})
 		},
 		doSendComment() {
 			if(this.validate() == false){
@@ -293,6 +312,10 @@ export default {
 		}
 		.content {
 			margin-bottom: 10rpx;
+			.expand {
+				font-size: 22rpx;
+				color: #5677fc;
+			}
 		}
 		.reply-box {
 			background-color: rgb(242, 242, 242);
