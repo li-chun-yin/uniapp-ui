@@ -18,36 +18,15 @@
 		<v-article-comment-lists :comments="hot_comments" @on-reply="popupCommentFormWin"></v-article-comment-lists>
 
 		<u-line margin="60rpx 0"/><!-- The bottom of the page left empty -->
-		<view class="reply-from">
-			<v-article-comment-form v-model="show_comment_form" :article_seq="article.seq" parent_seq="0"></v-article-comment-form>
-			<u-button class="reply-btn" @tap="popupCommentFormWin()">参与评论</u-button>
-			<u-button class="reply-num">
-				<u-icon name="chat" size="60"></u-icon>
-				<u-badge class="badge" size="mini" :count="article.comment_num" show-zero :overflow-count="99" :offset="[0,0]"></u-badge>
-			</u-button>
-			<u-button class="like">
-				<u-icon name="heart" size="60" @tap="doLike()"></u-icon>
-			</u-button>
-			<u-button class="share">
-				<u-icon name="share" size="60" @tap="doShare()"></u-icon>
-			</u-button>
-		</view>
+		<v-article-comment-toolbar :article="article"></v-article-comment-toolbar>
 	</view>
 </template>
 
 <script>
 import { detailApi } from '@/api/article'
 import { infoApi } from '@/api/user'
-import { 
-	indexApi as commentIndexApi,
-	createApi as commentCreateApi
-} from '@/api/article-comment'
+import { indexApi as commentIndexApi } from '@/api/article-comment'
 
-const init_comment_form = {
-	article_seq: 0,
-	parent_seq: 0,
-	content: ''
-}
 export default {
 	data() {
 		return {
@@ -56,16 +35,7 @@ export default {
 			article: {},
 			hot_comments: [],
 			hot_limit: 5,
-			my_comments: [],
-			show_comment_form: false,
-			comment_form: Object.assign({}, init_comment_form),
-			rules: {
-				content: [{
-					required: true,
-					type: 'string',
-					message: '请输入评论内容'
-				}]
-			}
+			my_comments: []
 		}
 	},
 	onShow() {
@@ -104,36 +74,7 @@ export default {
 			}).then(res => {
 				this.my_comments	= res.data.items
 			})
-		},
-		popupCommentFormWin() {
-			this.show_comment_form = true
-			console.log(this.comment_form)
-		},
-		validate(){
-			let verify = false
-			this.$refs.commentForm.setRules(this.rules)
-			this.$refs.commentForm.validate(valid => {
-				verify = valid
-			})
-			return verify
-		},
-		doSendComment() {
-			if(this.validate() == false){
-				return false
-			}
-			commentCreateApi(this.comment_form).then(res=>{
-				console.log(res)
-				this.show_comment_form = false
-				this.comment_form	= Object.assign({}, init_comment_form)
-				this.$u.toast('评论成功')
-			})
-		},
-		doLike() {
-			this.$u.toast('喜欢功能正在开发.')
-		},
-		doShare() {
-			this.$u.toast('请使用客户端自带的分享功能.')
-		}
+		}		
 	}
 };
 </script>
@@ -142,48 +83,6 @@ export default {
 
 .author-text, .createtime-text {
 	padding: 0 10rpx;
-}
-
-.reply-from {
-	position: fixed;
-	bottom:0;
-	left:0;
-	background: #FFFFFF;
-	width: 100%;
-	display:flex;
-	display:-webkit-flex;
-	padding: 35rpx;
-
-	.reply-btn {
-		background: #f3f4f6;
-		color: #606266;
-		flex: 1;
-	}
-
-	.reply-num {
-		margin-left: 10rpx;
-		padding: 0 10rpx;
-	}
-
-	.reply-num:after {
-		border: 0;
-	}
-
-	.like {
-		padding: 0 10rpx;
-	}
-
-	.like:after {
-		border: 0;
-	}
-
-	.share {
-		padding: 0 10rpx;
-	}
-
-	.share:after {
-		border: 0;
-	}
 }
 
 </style>
