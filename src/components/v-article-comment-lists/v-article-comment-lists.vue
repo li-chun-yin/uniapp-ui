@@ -1,56 +1,70 @@
 <template>
   <view>  
     <view class="comment" v-for="(comment, index) in comments" :key="'comments' + index">
-        <view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
-        <view class="right">
-            <view class="top">
-                <view class="name">{{ comment.user_nick }}</view>
-                <view class="like highlight">
-                    <view class="num">{{ comment.like_num }}</view>
-                    <u-icon name="thumb-up" :size="30"></u-icon>
-                </view>
-            </view>
-            <view class="content">
-                {{ comment.content }}
-                <text class="expand" @tap="doExpandContent(comment)" v-if="comment.need_expand == true">+展开</text>
-            </view>
-            <view class="bottom">
-                {{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
-                <view class="reply" @tap="popupCommentFormWin(comment.seq)">回复</view>
-            </view>
-            <view class="reply-box">
-                <view class="item" v-for="(reply, key) in comment.replys" :key="'hot_comments_reply_' + key">
-                    <view class="username">{{ comment.user_nick }}</view>
-                    <view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
-                    <view class="bottom">
-                        {{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
-                        <view class="reply" @tap="popupCommentFormWin(reply.seq)">回复</view>
-                    </view>
-                </view>
-                <view class="all-reply" @tap="'toAllReply'(comment.seq)" v-if="comment.reply_num > comment.replys.length">
-                    共{{ comment.reply_num }}条回复
-                    <u-icon class="more" name="arrow-right" :size="26"></u-icon>
-                </view>
-            </view>
-        </view>
+			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
+			<view class="right">
+				<view class="top">
+					<view class="name">{{ comment.user_nick }}</view>
+					<view class="like highlight">
+						<view class="num">{{ comment.like_num }}</view>
+						<u-icon name="thumb-up" :size="30"></u-icon>
+					</view>
+				</view>
+				<view class="content">
+					{{ comment.content }}
+					<text class="expand" @tap="doExpandContent(comment)" v-if="comment.need_expand == true">+展开</text>
+				</view>
+				<view class="bottom">
+					{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+					<view class="reply" @tap="popupCommentFormWin(comment)">回复</view>
+				</view>
+				<view class="reply-box">
+					<view class="item" v-for="(reply, key) in comment.replys" :key="'hot_comments_reply_' + key">
+						<view class="username">{{ comment.user_nick }}</view>
+						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
+						<view class="bottom">
+							{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+							<view class="reply" @tap="popupCommentFormWin(reply)">回复</view>
+						</view>
+					</view>
+					<view class="all-reply" @tap="'toAllReply'(comment.seq)" v-if="comment.reply_num > comment.replys.length">
+						共{{ comment.reply_num }}条回复
+						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
+					</view>
+				</view>
+			</view>
     </view>
+		<v-article-comment-form v-model="popup.show" :article_seq="popup.article_seq" :parent_seq="popup.parent_seq"></v-article-comment-form>
   </view>
 </template>
 
 <script>
 import { detailApi as commentDetailApi } from '@/api/article-comment'
+import vArticleCommentForm from '../v-article-comment-form/v-article-comment-form.vue';
 
 export default {
 	name: 'v-article-comment-lists',
+  components: { vArticleCommentForm },
 	props: {
 		comments: {
 				type: Array,
 				default: []
 		}
 	},
+	data() {
+		return {
+			popup: {
+				show: false,
+				article_seq: "0",
+				parent_seq: "0"
+			}
+		}
+	},
 	methods:{
-		popupCommentFormWin(parent_seq) {
-			this.$emit('on-reply', parent_seq)
+		popupCommentFormWin(comment) {
+			this.popup.show = true
+			this.popup.article_seq = comment.article_seq
+			this.popup.parent_seq = comment.parent_seq
 		},
 		toAllReply() {
 			console.log(4545)

@@ -19,19 +19,8 @@
 
 		<u-line margin="60rpx 0"/><!-- The bottom of the page left empty -->
 		<view class="reply-from">
-			<u-popup v-model="show_comment_form" mode="bottom" safe-area-inset-bottom>
-				<view class="wrap">
-					<u-form ref="commentForm" :model="comment_form">
-						<u-form-item class="reply-input" prop="content">
-							<u-input type="textarea" v-model="comment_form.content" maxlength="65535" border />
-							<view slot="right">
-								<u-button type="primary" plain @tap="doSendComment()" >发送</u-button>
-							</view>
-						</u-form-item>
-					</u-form>
-				</view>
-			</u-popup>
-			<u-button class="reply-btn" @tap="popupCommentFormWin(0)">参与评论</u-button>
+			<v-article-comment-form v-model="show_comment_form" :article_seq="article.seq" parent_seq="0"></v-article-comment-form>
+			<u-button class="reply-btn" @tap="popupCommentFormWin()">参与评论</u-button>
 			<u-button class="reply-num">
 				<u-icon name="chat" size="60"></u-icon>
 				<u-badge class="badge" size="mini" :count="article.comment_num" show-zero :overflow-count="99" :offset="[0,0]"></u-badge>
@@ -116,10 +105,8 @@ export default {
 				this.my_comments	= res.data.items
 			})
 		},
-		popupCommentFormWin(parent_seq) {
+		popupCommentFormWin() {
 			this.show_comment_form = true
-			this.comment_form.article_seq = this.article.seq
-			this.comment_form.parent_seq = parent_seq
 			console.log(this.comment_form)
 		},
 		validate(){

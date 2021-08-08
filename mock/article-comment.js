@@ -24,6 +24,7 @@ for (let i = 0; i < count; i++) {
     for(let j = 0; j <= reply_lists_num - 1; j++){
       replys.push(Mock.mock({
         seq: '@increment',
+        article_seq: 1,
         parent_seq: '@integer(0, 10)',
         user_nick: '@first',
         user_avatar: image_uri,
@@ -39,6 +40,8 @@ for (let i = 0; i < count; i++) {
 
   List.push(Mock.mock({
     seq: '@increment',
+    article_seq: 1,
+    parent_seq: 0,
     user_nick: '@first',
     user_avatar: image_uri,
     content: '@csentence(1,50)',
