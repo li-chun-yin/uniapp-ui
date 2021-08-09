@@ -11,7 +11,7 @@
 
 		<view class="popup-from">
 			<v-article-comment-form v-model="show_comment_form" :article_seq="article_seq"></v-article-comment-form>
-			<u-button class="button" type="info" @click="popupCommentFormWin()">来来来，说两句吧</u-button>
+			<u-button class="button" @click="popupCommentFormWin()">来来来，说两句吧</u-button>
 		</view>
   </view>
 </template>
@@ -97,7 +97,7 @@ export default {
 
 .popup-from {
 	position: fixed;
-	bottom:10rpx;
+	bottom:0;
 	left:0;
 	background: #FFFFFF;
 	width: 100%;
@@ -107,6 +107,8 @@ export default {
 
 	.button {
 		flex: 1;
+		background: #f3f4f6;
+		color: #606266;
 	}
 }
 
