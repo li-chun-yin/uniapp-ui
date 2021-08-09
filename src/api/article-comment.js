@@ -9,6 +9,8 @@ export function indexApi(data) {
         article_seq: data.article_seq,
         parent_seq: data.parent_seq,
         request_type: data.request_type,
+        order_seq: data.order_seq,
+        order_hot: data.order_hot,
         page: data.page,
         limit: data.limit
       },

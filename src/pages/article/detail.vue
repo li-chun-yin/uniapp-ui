@@ -12,10 +12,10 @@
 		</view>
 		
 		<view class="comment" v-if="my_comments.length">我的评论</view>
-		<v-article-comment-lists :comments="my_comments" @on-reply="popupCommentFormWin"></v-article-comment-lists>
+		<v-article-comment-lists :comments="my_comments"></v-article-comment-lists>
 		
 		<view class="comment">热门评论</view>
-		<v-article-comment-lists :comments="hot_comments" @on-reply="popupCommentFormWin"></v-article-comment-lists>
+		<v-article-comment-lists :comments="hot_comments"></v-article-comment-lists>
 
 		<u-line margin="60rpx 0"/><!-- The bottom of the page left empty -->
 		<v-article-comment-toolbar :article="article"></v-article-comment-toolbar>
@@ -24,22 +24,17 @@
 
 <script>
 import { detailApi } from '@/api/article'
-import { infoApi } from '@/api/user'
 import { indexApi as commentIndexApi } from '@/api/article-comment'
 
 export default {
 	data() {
 		return {
-			user: {},
 			request: {},
 			article: {},
 			hot_comments: [],
 			hot_limit: 5,
 			my_comments: []
 		}
-	},
-	onShow() {
-		this.loadUserInfo()
 	},
 	onLoad(e) {
 		this.request = e
@@ -52,15 +47,10 @@ export default {
 				this.loadComments()
 			})
 		},
-		loadUserInfo() {
-			infoApi().then(res => {
-				console.log('USER-CENTER LoadData:', res)
-				this.user = res.data
-			})
-		},
 		loadComments() {
 			commentIndexApi({
 				article_seq: this.article.seq,
+				order_hot: 'DESC',
 				page: 1,
 				limit: this.hot_limit
 			}).then(res => {
@@ -69,6 +59,7 @@ export default {
 			commentIndexApi({
 				article_seq: this.article.seq,
 				request_type: 'MY_COMMENT',
+				order_seq: 'ASC',
 				page: 1,
 				limit: 9999999999 // 需要所有自己发布的评论
 			}).then(res => {

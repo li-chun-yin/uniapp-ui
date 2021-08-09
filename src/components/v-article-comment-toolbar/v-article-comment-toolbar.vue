@@ -2,7 +2,7 @@
   <view class="article-comment-toolbar">
     <v-article-comment-form v-model="show_comment_form" :article_seq="article.seq"></v-article-comment-form>
     <u-button class="reply-btn" @tap="popupCommentFormWin()">参与评论</u-button>
-    <u-button class="reply-num" v-if="article.comment_num > 0">
+    <u-button class="reply-num" @tap="gotoCommentLists()" v-if="article.comment_num > 0">
       <u-icon name="chat" size="60"></u-icon>
       <u-badge class="badge" size="mini" :count="article.comment_num" :overflow-count="99" :offset="[0,0]"></u-badge>
     </u-button>
@@ -35,6 +35,12 @@ export default {
 	methods:{
 		popupCommentFormWin() {
 			this.show_comment_form = true
+		},
+		gotoCommentLists() {
+			console.log('gotoCommentLists')
+			this.$u.route('/pages/article-comment/index', {
+				seq: this.article.seq
+			})
 		},
 		doLike() {
 			this.$u.toast('喜欢功能正在开发.')

@@ -29,11 +29,9 @@ export default {
       default: false
     },
     article_seq: {
-      type: String,
       default: "0"
     },
     parent_seq: {
-      type: String,
       default: "0"
     }
   },
