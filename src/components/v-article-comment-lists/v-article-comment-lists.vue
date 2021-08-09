@@ -11,6 +11,7 @@
 					</view>
 				</view>
 				<view class="content">
+					<text class="to-user" v-if="comment.parent_seq > 0">@{{comment.to_user}}：</text>
 					{{ comment.content }}
 					<text class="expand" @tap="doExpandContent(comment)" v-if="comment.need_expand == true">+展开</text>
 				</view>
@@ -20,14 +21,14 @@
 				</view>
 				<view class="reply-box">
 					<view class="item" v-for="(reply, key) in comment.replys" :key="'hot_comments_reply_' + key">
-						<view class="username">{{ comment.user_nick }}</view>
+						<view class="username">{{ reply.user_nick }}</view>
 						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
 						<view class="bottom">
-							{{ comment.createtime|date('yyyy-mm-dd hh:ss') }}
+							{{ reply.createtime|date('yyyy-mm-dd hh:ss') }}
 							<view class="reply" @tap="popupCommentFormWin(reply)">回复</view>
 						</view>
 					</view>
-					<view class="all-reply" @tap="'toAllReply'(comment.seq)" v-if="comment.reply_num > comment.replys.length">
+					<view class="all-reply" @tap="gotoReply(comment)" v-if="comment.reply_num > comment.replys.length">
 						共{{ comment.reply_num }}条回复
 						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 					</view>
@@ -66,8 +67,10 @@ export default {
 			this.popup.article_seq = comment.article_seq
 			this.popup.parent_seq = comment.parent_seq
 		},
-		toAllReply() {
-			console.log(4545)
+		gotoReply(comment) {
+			this.$u.route('/pages/article-comment/reply', {
+				seq: comment.seq
+			})
 		},
 		doExpandContent(comment) {
 			commentDetailApi({
@@ -126,8 +129,13 @@ export default {
 		}
 		.content {
 			margin-bottom: 10rpx;
+			word-break: break-all;
 			.expand {
 				font-size: 22rpx;
+				color: #5677fc;
+			}
+
+			.to-user {
 				color: #5677fc;
 			}
 		}
@@ -142,9 +150,12 @@ export default {
 					color: #999999;
 				}
 
-				.text .to-user {
-					color: #5677fc;
-				}
+				.text {
+					word-break: break-all;
+					.to-user {
+						color: #5677fc;
+					}
+				} 
 			}
 			.all-reply {
 				padding: 20rpx;

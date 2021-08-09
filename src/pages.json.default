@@ -13,6 +13,12 @@
 			}
 		},
 		{
+			"path": "pages/article-comment/index"
+		},
+		{
+			"path": "pages/article-comment/reply"
+		},
+		{
 			"path": "pages/user/login",
 			"style": {
 				"navigationBarTitleText": "User Login"
