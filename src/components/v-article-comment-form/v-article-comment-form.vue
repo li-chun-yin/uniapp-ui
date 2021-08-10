@@ -71,7 +71,8 @@ export default {
       this.comment_form.parent_seq = this.parent_seq
 			createApi(this.comment_form).then(res=>{
 				console.log(res)
-				this.show_comment_form = false
+				this.show = false
+				this.$emit('send-comment', this.comment_form)
 				this.comment_form	= Object.assign({}, init_comment_form)
 				this.$u.toast('评论成功')
 			})
