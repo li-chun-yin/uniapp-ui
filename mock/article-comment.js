@@ -84,6 +84,13 @@ module.exports = [
         pageList = []
       }
 
+      if(request_type == "REPLY"){
+        for( var i in pageList ){
+          pageList[i].replys = []
+          pageList[i].reply_num = 0
+        }
+      }
+
       return {
         code: 20000,
         data: {

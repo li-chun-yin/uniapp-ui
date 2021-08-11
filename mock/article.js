@@ -15,6 +15,7 @@ for (let i = 0; i < count; i++) {
     content: baseContent,
     image: {url: image_uri},
     'status|1': ['published', 'draft'],
+    is_like: '@Boolean',
     pv: '@integer(300, 5000)',
     comment_num: '@integer(0, 999)',
     createtime: +Mock.Random.date('T'),
@@ -91,6 +92,23 @@ module.exports = [
       return {
         code: 20000,
         message: 'ok'
+      }
+    }
+  },
+  {
+    url: '/article/like',
+    type: 'post',
+    response: config => {
+      const post = config.body
+      const seq = post.seq
+      for (const item of List) {
+        if (item.seq === +seq) {
+          item.is_like = !item.is_like
+          return {
+            code: 20000,
+            message: 'ok'
+          }
+        }
       }
     }
   }

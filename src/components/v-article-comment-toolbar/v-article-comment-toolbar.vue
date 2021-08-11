@@ -7,7 +7,8 @@
       <u-badge class="badge" size="mini" :count="article.comment_num" :overflow-count="99" :offset="[0,0]"></u-badge>
     </u-button>
     <u-button class="like">
-      <u-icon name="heart" size="60" @tap="doLike()"></u-icon>
+      <u-icon name="heart" size="60" @tap="doLike()" v-if="!article.is_like"></u-icon>
+      <u-icon name="heart-fill" color="red" size="60" @tap="doLike()" v-if="article.is_like"></u-icon>
     </u-button>
     <u-button class="share">
       <u-icon name="share" size="60" @tap="doShare()"></u-icon>
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+import { likeApi } from '@/api/article'
+
 export default {
 	name: 'v-article-comment-toolbar',
   props: {
@@ -23,7 +26,8 @@ export default {
       type: Object,
       default: {
         seq: 0,
-        comment_num: 0
+        comment_num: 0,
+				is_like: false
       }
     }
   },
@@ -43,7 +47,9 @@ export default {
 			})
 		},
 		doLike() {
-			this.$u.toast('喜欢功能正在开发.')
+			likeApi(this.article).then(res => {
+				this.article.is_like = !this.article.is_like;
+			})
 		},
 		doShare() {
 			this.$u.toast('请使用客户端自带的分享功能.')

@@ -26,6 +26,10 @@
 						<view class="bottom">
 							{{ reply.createtime|date('yyyy-mm-dd hh:ss') }}
 							<view class="reply" @tap="popupCommentFormWin(reply)">回复</view>
+							<view class="like highlight">
+								<view class="num">{{ comment.like_num }}</view>
+								<u-icon name="thumb-up" :size="30"></u-icon>
+							</view>
 						</view>
 					</view>
 					<view class="all-reply" @tap="gotoReply(comment)" v-if="comment.reply_num > comment.replys.length">
@@ -175,6 +179,23 @@ export default {
 			.reply {
 				color: #5677fc;
 				margin-left: 10rpx;
+			}
+			.like {
+				display: flex;
+				align-items: center;
+				color: #9a9a9a;
+				font-size: 26rpx;
+				margin-left: 30rpx;
+				.num {
+					margin-right: 4rpx;
+					color: #9a9a9a;
+				}
+			}
+			.highlight {
+				color: #5677fc;
+				.num {
+					color: #5677fc;
+				}
 			}
 		}
 	}
