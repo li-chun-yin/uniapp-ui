@@ -73,3 +73,27 @@ export function createApi(data) {
     })
   });
 }
+
+export function likeApi(data) {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/article-comment/like', //仅为示例，并非真实接口地址。
+      method: 'post',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        seq: data.seq
+      },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  });
+}

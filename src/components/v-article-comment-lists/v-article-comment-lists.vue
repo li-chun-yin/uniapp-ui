@@ -7,7 +7,8 @@
 					<view class="name">{{ comment.user_nick }}</view>
 					<view class="like highlight">
 						<view class="num">{{ comment.like_num }}</view>
-						<u-icon name="thumb-up" :size="30"></u-icon>
+						<u-icon name="thumb-up" :size="30" @tap="doLike(comment)" v-if="!comment.is_like"></u-icon>
+						<u-icon name="thumb-up-fill" :size="30" @tap="doLike(comment)" v-if="comment.is_like"></u-icon>
 					</view>
 				</view>
 				<view class="content">
@@ -27,8 +28,9 @@
 							{{ reply.createtime|date('yyyy-mm-dd hh:ss') }}
 							<view class="reply" @tap="popupCommentFormWin(reply)">回复</view>
 							<view class="like highlight">
-								<view class="num">{{ comment.like_num }}</view>
-								<u-icon name="thumb-up" :size="30"></u-icon>
+								<view class="num">{{ reply.like_num }}</view>
+								<u-icon name="thumb-up" :size="30" @tap="doLike(reply)" v-if="!reply.is_like"></u-icon>
+								<u-icon name="thumb-up-fill" :size="30" @tap="doLike(reply)" v-if="reply.is_like"></u-icon>
 							</view>
 						</view>
 					</view>
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import { detailApi as commentDetailApi } from '@/api/article-comment'
+import { detailApi, likeApi } from '@/api/article-comment'
 import vArticleCommentForm from '../v-article-comment-form/v-article-comment-form.vue';
 
 export default {
@@ -77,11 +79,19 @@ export default {
 			})
 		},
 		doExpandContent(comment) {
-			commentDetailApi({
-				seq: comment.seq
-			}).then(res=>{
+			detailApi(comment).then(res=>{
 				for(let i in res.data ){
 					comment[i] = res.data[i]
+				}
+			})
+		},
+		doLike(comment) {
+			likeApi(comment).then(res => {
+				comment.is_like = !comment.is_like
+				if(comment.is_like == true){
+					comment.like_num ++
+				}else{
+					comment.like_num --
 				}
 			})
 		}

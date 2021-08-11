@@ -32,6 +32,7 @@ for (let i = 0; i < count; i++) {
         content: '@cparagraph(1)',        
         need_expand: true, // '@boolean',  //是否需要展开内容
         like_num: '@integer(300, 5000)',
+        is_like: '@Boolean',
         createtime: +Mock.Random.date('T'),
         updatetime: +Mock.Random.date('T')
       }))
@@ -47,6 +48,7 @@ for (let i = 0; i < count; i++) {
     content: '@csentence(1,50)',
     need_expand: true, // '@boolean', //是否需要展开内容
     like_num: '@integer(300, 5000)',
+    is_like: '@Boolean',
     createtime: +Mock.Random.date('T'),
     updatetime: +Mock.Random.date('T'),
     replys: replys,
@@ -126,6 +128,23 @@ module.exports = [
         message: 'ok',
         data: {
           seq: List[0].seq
+        }
+      }
+    }
+  },
+  {
+    url: '/article-comment/like',
+    type: 'post',
+    response: config => {
+      const post = config.body
+      const seq = post.seq
+      for (const item of List) {
+        if (item.seq === +seq) {
+          item.is_like = !item.is_like
+          return {
+            code: 20000,
+            message: 'ok'
+          }
         }
       }
     }
