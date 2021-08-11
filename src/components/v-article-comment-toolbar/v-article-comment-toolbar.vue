@@ -1,17 +1,17 @@
 <template>
   <view class="article-comment-toolbar">
     <v-article-comment-form v-model="show_comment_form" :article_seq="article.seq"></v-article-comment-form>
-    <u-button class="reply-btn" @tap="popupCommentFormWin()">参与评论</u-button>
-    <u-button class="reply-num" @tap="gotoCommentLists()" v-if="article.comment_num > 0">
+    <u-button class="reply-btn" @click="popupCommentFormWin()">参与评论</u-button>
+    <u-button class="reply-num" @click="gotoCommentLists()" v-if="article.comment_num > 0">
       <u-icon name="chat" size="60"></u-icon>
       <u-badge class="badge" size="mini" :count="article.comment_num" :overflow-count="99" :offset="[0,0]"></u-badge>
     </u-button>
-    <u-button class="like">
-      <u-icon name="heart" size="60" @tap="doLike()" v-if="!article.is_like"></u-icon>
-      <u-icon name="heart-fill" color="red" size="60" @tap="doLike()" v-if="article.is_like"></u-icon>
+    <u-button class="like" @click="doLike()">
+      <u-icon name="heart" size="60"  v-if="!is_like"></u-icon>
+      <u-icon name="heart-fill" color="red" size="60" v-if="is_like"></u-icon>
     </u-button>
-    <u-button class="share">
-      <u-icon name="share" size="60" @tap="doShare()"></u-icon>
+    <u-button class="share" @click="doShare()">
+      <u-icon name="share" size="60"></u-icon>
     </u-button>
 	</view>
 </template>
@@ -27,14 +27,18 @@ export default {
       default: {
         seq: 0,
         comment_num: 0,
-				is_like: false
+		is_like: false
       }
     }
   },
 	data() {
 		return {
-			show_comment_form: false
+			show_comment_form: false,
+			is_like: false
 		}
+	},
+	onLoad(e) {
+		this.is_like = this.article.is_like
 	},
 	methods:{
 		popupCommentFormWin() {
@@ -48,7 +52,7 @@ export default {
 		},
 		doLike() {
 			likeApi(this.article).then(res => {
-				this.article.is_like = !this.article.is_like;
+				this.is_like = !this.is_like;
 			})
 		},
 		doShare() {

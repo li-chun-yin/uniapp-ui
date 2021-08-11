@@ -21,6 +21,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+.hbuilderx
 
 src/pages.json
 src/manifest.json

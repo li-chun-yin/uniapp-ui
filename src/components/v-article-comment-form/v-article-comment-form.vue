@@ -5,7 +5,7 @@
         <u-form-item class="reply-input" prop="content">
           <u-input type="textarea" v-model="comment_form.content" maxlength="65535" border />
           <view slot="right">
-            <u-button type="primary" plain @tap="doSendComment()" >发送</u-button>
+            <u-button type="primary" plain @click="doSendComment()" >发送</u-button>
           </view>
         </u-form-item>
       </u-form>

@@ -42,6 +42,7 @@ export default {
 		loadData(){
 			this.hast_next_page = false
 			indexApi(this.search).then((res) => {
+				console.log(res)
 				this.items = this.items.concat(res.data.items)
 				if(res.data.items.length == this.search.limit){
 					this.hast_next_page = true

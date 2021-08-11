@@ -1,6 +1,6 @@
 <template>
   <view>  
-    <view class="comment" v-for="(comment, index) in comments" :key="'comments' + index">
+    <view class="comment" v-for="(comment, index) in comments" :key="index">
 			<view class="left"><image :src="comment.user_avatar" mode="aspectFill"></image></view>
 			<view class="right">
 				<view class="top">
@@ -21,7 +21,7 @@
 					<view class="reply" @tap="popupCommentFormWin(comment)">回复</view>
 				</view>
 				<view class="reply-box">
-					<view class="item" v-for="(reply, key) in comment.replys" :key="'hot_comments_reply_' + key">
+					<view class="item" v-for="(reply, key) in comment.replys" :key="key">
 						<view class="username">{{ reply.user_nick }}</view>
 						<view class="text"><text class="to-user" v-if="reply.parent_seq > 0">@{{reply.to_user}}：</text>{{ reply.content }}</view>
 						<view class="bottom">
