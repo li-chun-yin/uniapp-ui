@@ -1,18 +1,20 @@
 <template>
   <view class="article-comment-toolbar">
-    <v-article-comment-form v-model="show_comment_form" :article_seq="article.seq"></v-article-comment-form>
-    <u-button class="reply-btn" @click="popupCommentFormWin()">参与评论</u-button>
-    <u-button class="reply-num" @click="gotoCommentLists()" v-if="article.comment_num > 0">
-      <u-icon name="chat" size="60"></u-icon>
-      <u-badge class="badge" size="mini" :count="article.comment_num" :overflow-count="99" :offset="[0,0]"></u-badge>
-    </u-button>
-    <u-button class="like" @click="doLike()">
-      <u-icon name="heart" size="60"  v-if="!is_like"></u-icon>
-      <u-icon name="heart-fill" color="red" size="60" v-if="is_like"></u-icon>
-    </u-button>
-    <u-button class="share" @click="doShare()">
-      <u-icon name="share" size="60"></u-icon>
-    </u-button>
+		<view class="reply-btn">
+			<v-article-comment-form v-model="show_comment_form" :article_seq="article.seq"></v-article-comment-form>
+			<u-button :custom-style="{width:'100%', background:'#f3f4f6', height:'100%'}" :size="70" @click="popupCommentFormWin()">参与评论</u-button>
+		</view>
+    <view class="reply-num" @click="gotoCommentLists()" v-if="article.comment_num > 0">
+      <u-icon name="chat" :size="70"></u-icon>
+      <u-badge class="badge" size="mini" :count="article.comment_num" :overflow-count="99" :offset="[35,210]"></u-badge>
+    </view>
+    <view class="like" @click="doLike()">
+      <u-icon name="heart" :size="70"  v-if="!is_like"></u-icon>
+      <u-icon name="heart-fill" color="red" :size="70" v-if="is_like"></u-icon>
+    </view>
+    <view class="share" @click="doShare()">
+      <u-icon name="share" :size="70"></u-icon>
+    </view>
 	</view>
 </template>
 
@@ -27,7 +29,7 @@ export default {
       default: {
         seq: 0,
         comment_num: 0,
-		is_like: false
+				is_like: false
       }
     }
   },
@@ -75,34 +77,20 @@ export default {
 	padding: 35rpx;
 
 	.reply-btn {
-		background: #f3f4f6;
-		color: #606266;
 		flex: 1;
 	}
 
 	.reply-num {
-		margin-left: 10rpx;
-		padding: 0 10rpx;
-	}
-
-	.reply-num:after {
-		border: 0;
+		padding-left: 20rpx;
+		padding-right:15rpx;
 	}
 
 	.like {
-		padding: 0 10rpx;
-	}
-
-	.like:after {
-		border: 0;
+		padding-right: 15rpx;
 	}
 
 	.share {
-		padding: 0 10rpx;
-	}
-
-	.share:after {
-		border: 0;
+		padding-right: 15rpx;
 	}
 }
 
