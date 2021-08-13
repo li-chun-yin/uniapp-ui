@@ -33,19 +33,34 @@ export default {
 			article: {},
 			hot_comments: [],
 			hot_limit: 5,
-			my_comments: []
+			my_comments: [],
+			mp_share_data: {}
 		}
 	},
 	onLoad(e) {
 		this.request = e
 		this.loadData()
 	},
+	onUnload() {
+		this.setOrgMpShareData()
+		console.log('unload', this.$u.mpShare)
+	},
+	
 	methods:{
 		loadData(){
 			detailApi(this.request).then(res => {
 				this.article = res.data
+				this.setNewMpShareData()
 				this.loadComments()
 			})
+		},
+		setNewMpShareData(){
+			this.mp_share_data = Object.assign({}, this.$u.mpShare)
+			this.$u.mpShare.title = this.article.title
+			this.$u.mpShare.imageUrl = this.article.image.url
+		},
+		setOrgMpShareData(){
+			this.$u.mpShare = this.mp_share_data
 		},
 		loadComments() {
 			commentIndexApi({

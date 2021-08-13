@@ -10,8 +10,12 @@ const app = new Vue({
 })
 
 // uView
-import uView from "uview-ui";
-Vue.use(uView, app);
+import uView from "uview-ui"
+Vue.use(uView, app)
+
+import mpShare from 'uview-ui/libs/mixin/mpShare.js';
+Vue.mixin(mpShare)
+
 
 import * as filters from './utils/filter' // global filters
 // register global utility filters
