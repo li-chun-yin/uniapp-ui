@@ -13,14 +13,14 @@
 						@start="startCaptchaTime"
 						@change="doChangeCaptcha"
 					></u-verification-code>
-					<u-button @tap="doSendCaptcha" :disabled="captcha.is_sending">{{captcha.tip}}</u-button>
+					<u-button @click="doSendCaptcha" :disabled="captcha.is_sending">{{captcha.tip}}</u-button>
 				</view>
 			</u-form-item>
 			<u-form-item prop="nick" v-if="is_first_login">
 				<u-input v-model="form.nick" type="text" placeholder="请输入nick" />
 			</u-form-item>
 			<u-form-item>
-				<u-button @tap="doLogin" type="primary" class="button100">登陆</u-button>
+				<u-button @click="doLogin" type="primary" class="button100">登陆</u-button>
 			</u-form-item>
 		</u-form>
 	</view>
