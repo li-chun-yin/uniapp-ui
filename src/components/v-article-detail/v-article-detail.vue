@@ -1,8 +1,10 @@
 <template>
 	<view>
-		<u-navbar :title="article.title">
+		<u-navbar>
       <view slot="right" v-if="edit_able">
-				<u-button type="primary" size="medium" :plain="true" @tap="gotoEdit">编辑</u-button>
+				<u-button type="primary" plain size="mini" shape="circle" @click="gotoEdit" :custom-style="{marginRight: '30rpx'}">
+					<u-icon name="edit-pen"></u-icon>编辑
+				</u-button>
 			</view>
     </u-navbar>
 		<view class="content">
