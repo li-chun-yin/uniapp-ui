@@ -23,11 +23,13 @@
 							<text class="navigat-arrow">&#xe65e;</text>
 					</view>
 				</navigator>
-				<view class="center-list-item">
-					<text class="list-icon">&#xe65f;</text>
-					<text class="list-text">我评论的博文</text>
-					<text class="navigat-arrow">&#xe65e;</text>
-				</view>
+				<navigator style="width:100%" :url="is_login ? 'article/lists-by-comment' : 'login?totype=switchTab&tourl=/pages/user/center'">
+					<view class="center-list-item">
+						<text class="list-icon">&#xe65f;</text>
+						<text class="list-text">我评论的博文</text>
+						<text class="navigat-arrow">&#xe65e;</text>
+					</view>
+				</navigator>
 			</view>
 			<view class="center-list">
 				<view class="center-list-item">

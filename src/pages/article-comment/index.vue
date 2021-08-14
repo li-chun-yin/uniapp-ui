@@ -103,7 +103,7 @@ export default {
 	width: 100%;
 	display:flex;
 	display:-webkit-flex;
-	padding: 15rpx;
+	padding: 35rpx;
 
 	.button {
 		flex: 1;

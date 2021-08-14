@@ -27,6 +27,30 @@ export function indexApi(data) {
   });
 }
 
+export function articlesApi(data) {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/article-comment/articles', //仅为示例，并非真实接口地址。
+      method: 'get',
+      data: {
+        user_id: data.user_id,
+        order_seq: data.order_seq,
+        page: data.page,
+        limit: data.limit
+      },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  });
+}
+
 export function detailApi(data) {
   return new Promise((resolve, reject) => {
     uni.request({
