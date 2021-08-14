@@ -1,23 +1,9 @@
 <template>
 	<view class="wrap">
-		<u-navbar title="My Article Lists">
-			<view slot="right">
-				<u-button type="primary" size="medium" :plain="true" @tap="gotoPublish">发新</u-button>
-			</view>
-		</u-navbar>
-		<view v-for="item in items" v-bind:key="item.seq">
-			<view class="u-body-item u-flex u-row-between u-p-b-0">
-				<view class="u-body-item-title u-line-2">
-					<navigator
-						:url="'/pages/user/article/detail?seq='+item.seq"
-						hover-class="navigator-hover"
-					>{{item.desc}}</navigator>
-				</view>
-				<image :src="item.image.url" mode="aspectFill"></image>
-			</view>
-			<u-line margin="15rpx" />
+		<v-article-lists detail_path="/pages/user/article/detail" :items="items"></v-article-lists>
+		<view class="publish-button">
+			<u-button type="primary" class="button" plain @click="gotoPublish">发布新文章</u-button>
 		</view>
-		<u-empty v-if="items.length == 0" class="top50"></u-empty>
 	</view>
 </template>
 
@@ -75,20 +61,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-	.top50 {
-		padding-top: 50rpx;
-	}
-	.u-body-item {
-		font-size: 32rpx;
-		color: #333;
-		padding: 20rpx 10rpx;
-	}
 
-	.u-body-item image {
-		width: 120rpx;
-		flex: 0 0 120rpx;
-		height: 120rpx;
-		border-radius: 8rpx;
-		margin-left: 12rpx;
-	}
+.publish-button {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	padding: 30rpx;
+	width: 100%;
+}
+
 </style>

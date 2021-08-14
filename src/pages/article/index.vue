@@ -1,24 +1,14 @@
 <template>
 	<view class="wrap">
-		<view v-for="item in items" v-bind:key="item.seq">
-			<view class="u-body-item u-flex u-row-between u-p-b-0">
-				<view class="u-body-item-title u-line-2">
-					<navigator
-						:url="'/pages/article/detail?seq='+item.seq"
-						hover-class="navigator-hover"
-					>{{item.desc}}</navigator>
-				</view>
-				<image :src="item.image.url" mode="aspectFill"></image>
-			</view>
-			<u-line margin="15rpx" />
-		</view>
-		<u-empty v-if="items.length == 0" class="top50"></u-empty>
+		<v-article-lists :items="items" detail_path="/pages/article/detail"></v-article-lists>
 	</view>
 </template>
 
 <script>
 import { indexApi } from '@/api/article'
+import vArticleLists from '../../components/v-article-lists/v-article-lists.vue';
 export default {
+  components: { vArticleLists },
 	data() {
 		return {
 			items: [],
@@ -47,11 +37,6 @@ export default {
 				if(res.data.items.length == this.search.limit){
 					this.hast_next_page = true
 				}
-			})
-		},
-		navigateToDetail(seq){
-			this.$u.route({
-				url: '/pages/article/detail?seq='+seq
 			})
 		}
 	}

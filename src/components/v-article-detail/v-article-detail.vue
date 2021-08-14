@@ -1,12 +1,5 @@
 <template>
 	<view>
-		<u-navbar>
-      <view slot="right" v-if="edit_able">
-				<u-button type="primary" plain size="mini" shape="circle" @click="gotoEdit" :custom-style="{marginRight: '30rpx'}">
-					<u-icon name="edit-pen"></u-icon>编辑
-				</u-button>
-			</view>
-    </u-navbar>
 		<view class="content">
 			<view class="uni-title uni-h1 u-line-1 u-text-center"><text>{{article.title}}</text></view>
 			<u-gap height="10" bg-color="#DDD" margin-top="10" margin-bottom="10"></u-gap>
@@ -95,11 +88,6 @@ export default {
 				limit: 9999999999 // 需要所有自己发布的评论
 			}).then(res => {
 				this.my_comments	= res.data.items
-			})
-		},
-    gotoEdit(){
-			this.$u.route('/pages/user/article/form', {
-				seq: this.article.seq
 			})
 		}
 	}
