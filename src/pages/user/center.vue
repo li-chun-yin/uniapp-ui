@@ -39,7 +39,7 @@
 				</view>
 			</view>
 			<view class="center-list btn-row">
-				<u-button v-if="is_login" type="primary" @tap="doLogout">退出登录</u-button>
+				<u-button v-if="is_login" type="primary" @click="doLogout">退出登录</u-button>
 			</view>
 		</view>
 	</view>
