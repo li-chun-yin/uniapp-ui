@@ -5,6 +5,12 @@ const tokens = {
   },
   'empty@uni.dev': {
     token: 'empty-token'
+  },
+  '10000000000': {
+    token: 'ex-token'
+  },
+  '10000000001': {
+    token: 'empty-token'
   }
 }
 
@@ -31,14 +37,18 @@ module.exports = [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { email } = config.body
-      const token_data = tokens[email]
+      const { email, phone } = config.body
+      let token_data = tokens[email]
+      
+      if(!token_data) {
+        token_data = tokens[phone]
+      }
 
       // mock error
       if (!token_data) {
         return {
           code: 999999,
-          message: 'Account and password are incorrect.'
+          message: 'Account or password are incorrect.'
         }
       }
 

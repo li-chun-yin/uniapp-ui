@@ -11,6 +11,7 @@ export function loginApi(data) {
       },
       data: {
         email: data.email,
+        phone: data.phone,
         captcha: data.captcha,
         nick: data.nick,
       },

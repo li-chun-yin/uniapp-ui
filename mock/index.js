@@ -4,6 +4,7 @@ const { param2Obj } = require('./utils')
 const upload = require('./upload')
 const user = require('./user')
 const email = require('./email')
+const phone = require('./phone')
 const article = require('./article')
 const article_comment = require('./article-comment')
 
@@ -12,7 +13,8 @@ const mocks = [
   ...user,
   ...article,
   ...article_comment,
-  ...email
+  ...email,
+  ...phone
 ]
 
 // for front mock

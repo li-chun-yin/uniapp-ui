@@ -1,13 +1,8 @@
 <template>
 	<view class="wrap">
 		<u-form :model="form" ref="uForm">
-			<u-form-item prop="phone">
-				<u-input v-model="form.phone" type="number" placeholder="请输入手机号" />
-				<!--  #ifdef  MP-WEIXIN -->
-				<view slot="right">
-					<u-button open-type="getPhoneNumber" @getphonenumber="decodePhoneNumber">用微信登录</u-button>
-				</view>
-				<!--  #endif -->
+			<u-form-item prop="email">
+				<u-input v-model="form.email" type="text" placeholder="请输入Email" />
 			</u-form-item>
 			<u-form-item prop="captcha">
 				<u-input v-model="form.captcha" type="captcha" placeholder="请输入验证码" />
@@ -33,16 +28,13 @@
 
 <script>
 import { loginApi } from '@/api/user'
-import { captchaApi } from '@/api/phone'
+import { captchaApi } from '@/api/email'
 export default {
 	data() {
-		const phone_rule	= [{
+		const email_rule	= [{
 			required: true,
-			pattern: /^[\d]+$/,
-			transform(value) {
-				return String(value);
-			},
-			message: '请输入有效的手机号'
+			type: 'email',
+			message: '请输入有效的Email'
 		}]
 		const captcha_rule	= [{
 			required: true,
@@ -54,17 +46,17 @@ export default {
 		}]
 		return {
 			form: {
-				phone: '',
+				email: '',
 				captcha: '',
 				nick: ''
 			},
 			is_first_login: false,
 			rules: {
 				captcha: {
-					phone: phone_rule
+					email: email_rule
 				},
 				form: {
-					phone: phone_rule,
+					email: email_rule,
 					captcha: captcha_rule,
 					nick: nick_rule
 				}
@@ -114,15 +106,12 @@ export default {
 			this.captcha.is_sending = true;
 			captchaApi({
 				type: 'login',
-				phone: this.form.phone
+				email: this.form.email
 			}).then(res => {
 				this.$refs.captcha.start();
 				this.$u.toast('验证码已发送, 可能会有延迟，敬请谅解');
 				this.is_first_login	= res.data.is_first_login
 			})
-		},
-		decodePhoneNumber(e) {
-			console.log(e)
 		},
 		endCaptchaTime() {
 			this.captcha.is_sending = false
