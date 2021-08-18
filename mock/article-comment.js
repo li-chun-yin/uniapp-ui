@@ -188,7 +188,7 @@ module.exports = [
     type: 'post',
     response: config => {
       const post = config.body
-      const seq = post.seq
+      const seq = post.article_comment_seq
       for (const item of List) {
         if (item.seq === +seq) {
           item.is_like = !item.is_like
