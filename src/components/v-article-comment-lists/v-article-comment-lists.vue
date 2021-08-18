@@ -71,7 +71,7 @@ export default {
 		popupCommentFormWin(comment) {
 			this.popup.show = true
 			this.popup.article_seq = comment.article_seq
-			this.popup.parent_seq = comment.parent_seq
+			this.popup.parent_seq = comment.seq
 		},
 		gotoReply(comment) {
 			this.$u.route('/pages/article-comment/reply', {
