@@ -39,8 +39,11 @@ export default {
 			is_like: false
 		}
 	},
-	onLoad(e) {
-		this.is_like = this.article.is_like
+	watch: {
+		article(nVal, oVal) {
+			console.log('watch value', nVal, oVal)
+			this.is_like = this.article.is_like
+		}
 	},
 	methods:{
 		popupCommentFormWin() {

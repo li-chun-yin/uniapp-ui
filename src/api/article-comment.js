@@ -107,7 +107,7 @@ export function likeApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        article_comment_seq: data.article_comment_seq
+        article_comment_seq: data.seq
       },
       success: (res) => {
         resolve(res.data)
