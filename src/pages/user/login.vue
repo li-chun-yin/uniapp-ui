@@ -3,11 +3,6 @@
 		<u-form :model="form" ref="uForm">
 			<u-form-item prop="phone">
 				<u-input v-model="form.phone" type="number" placeholder="请输入手机号" />
-				<!--  #ifdef  MP-WEIXIN -->
-				<view slot="right">
-					<u-button open-type="getPhoneNumber" @getphonenumber="decodePhoneNumber">用微信登录</u-button>
-				</view>
-				<!--  #endif -->
 			</u-form-item>
 			<u-form-item prop="captcha">
 				<u-input v-model="form.captcha" type="captcha" placeholder="请输入验证码" />
@@ -28,6 +23,11 @@
 				<u-button @click="doLogin" type="primary" class="button100">登陆</u-button>
 			</u-form-item>
 		</u-form>
+		<!--  #ifdef  MP-WEIXIN -->
+		<view>
+			<u-button open-type="getPhoneNumber" type="success" @getphonenumber="doLoginByWeixin">使用微信手机号登录</u-button>
+		</view>
+		<!--  #endif -->
 	</view>
 </template>
 
@@ -56,7 +56,8 @@ export default {
 			form: {
 				phone: '',
 				captcha: '',
-				nick: ''
+				nick: '',
+				type: 'phone'
 			},
 			is_first_login: false,
 			rules: {
@@ -121,8 +122,29 @@ export default {
 				this.is_first_login	= res.data.is_first_login
 			})
 		},
-		decodePhoneNumber(e) {
-			console.log(e)
+		doLoginByWeixin(phone_data) {
+			let _this = this
+			console.log(phone_data)
+			if(!phone_data.detail || !phone_data.detail.encryptedData || !phone_data.detail.iv){
+				return;
+			}
+			uni.login({
+				success(code_data) {
+					loginApi({
+						encrypted_data: phone_data.detail.encryptedData,
+						iv: phone_data.detail.iv,
+						code: code_data.code,
+						type: 'mpWeixin'
+					}).then((res) => {
+						_this.$u.route(_this.login_to)
+						console.log('LOGIN Weixin LoginApi:', _this.login_to)
+					})
+				},
+				fail(e) {
+					console.log(e)
+					_this.$u.toast('登录失败.');
+				}
+			})
 		},
 		endCaptchaTime() {
 			this.captcha.is_sending = false

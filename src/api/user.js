@@ -10,10 +10,14 @@ export function loginApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        email: data.email,
         phone: data.phone,
+        email: data.email,
+        encrypted_data: data.encrypted_data,
+        iv: data.iv,
+        code: data.code,
         captcha: data.captcha,
         nick: data.nick,
+        type: data.type /*email, phone, mpWeixin*/
       },
       success: (res) => {
         setToken(res.data.data.token)

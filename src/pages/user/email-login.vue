@@ -48,7 +48,8 @@ export default {
 			form: {
 				email: '',
 				captcha: '',
-				nick: ''
+				nick: '',
+				type: 'email'
 			},
 			is_first_login: false,
 			rules: {

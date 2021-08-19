@@ -37,11 +37,15 @@ module.exports = [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { email, phone } = config.body
+      const { email, phone, type } = config.body
       let token_data = tokens[email]
       
       if(!token_data) {
         token_data = tokens[phone]
+      }
+
+      if(type == 'mpWeixin'){
+        token_data = tokens['10000000000']
       }
 
       // mock error
