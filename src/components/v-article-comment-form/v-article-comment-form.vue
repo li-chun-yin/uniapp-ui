@@ -36,11 +36,11 @@ export default {
     }
   },
 	watch: {
-			value(nVal, oVal) {
-        console.log('watch value', nVal, oVal)
-				this.show = nVal
-			}
-		},
+		value(nVal, oVal) {
+			console.log('watch value', nVal, oVal)
+			this.show = nVal
+		}
+	},
 	data() {
 		return {
 			show: false,

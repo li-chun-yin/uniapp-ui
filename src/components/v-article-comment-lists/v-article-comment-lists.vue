@@ -86,7 +86,7 @@ export default {
 			})
 		},
 		doLike(comment) {
-			likeApi({ article_comment_seq:comment.seq }).then(res => {
+			likeApi(comment).then(res => {
 				comment.is_like = !comment.is_like
 				if(comment.is_like == true){
 					comment.like_num ++
