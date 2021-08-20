@@ -3,12 +3,12 @@
 		<view class="center">
 			<view class="logo" :hover-class="is_login ? '' : 'logo-hover'">
 				<image class="logo-img" :src="user.avatar" @tap="doChooseAvatar"></image>
-				<view class="logo-title" v-if="is_login">
-					<text class="user-name">{{ user.nick }}</text>
+				<view v-if="is_login"  class="logo-title">
+					<navigator style="width:100%" :url="is_login ? 'nick/form' : 'login?totype=switchTab&tourl=/pages/user/center'">
+						<text class="user-name">{{ user.nick }}</text>
+					</navigator>
 				</view>
-				<navigator style="width:100%" hover-class="navigator-hover"
-					url="login?totype=switchTab&tourl=/pages/user/center"
-				v-else>
+				<navigator v-else style="width:100%" hover-class="navigator-hover" url="login?totype=switchTab&tourl=/pages/user/center">
 					<view class="logo-title">
 							<text class="user-name">您未登录</text>
 							<text class="go-login navigat-arrow">&#xe65e;</text>
@@ -134,7 +134,10 @@
 					fileType: 'png'
 				})
 			}
-    }
+    },
+		doChangeNick() {
+
+		}
 	}
 </script>
 
@@ -156,7 +159,7 @@
 	}
 
 	button {
-		width: 100%;
+		width: 98%;
 	}
 
 	.center {

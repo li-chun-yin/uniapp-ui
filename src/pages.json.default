@@ -7,10 +7,7 @@
 			"path": "pages/article/index"
 		},
 		{
-			"path": "pages/article/detail",
-			"style": {
-				"navigationStyle": "custom"
-			}
+			"path": "pages/article/detail"
 		},
 		{
 			"path": "pages/article-comment/index"
@@ -21,25 +18,37 @@
 		{
 			"path": "pages/user/login",
 			"style": {
-				"navigationBarTitleText": "User Login"
+				"navigationBarTitleText": "用户登录"
 			}
 		},
 		{
 			"path": "pages/user/center",
 			"style": {
-				"navigationBarTitleText": "User Center"
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{
 			"path": "pages/user/avatar/u-avatar-cropper",
 			"style": {
-				"navigationBarTitleText": "User Avatar"
+				"navigationBarTitleText": "头像选择"
+			}
+		},
+		{
+			"path": "pages/user/nick/form",
+			"style": {
+				"navigationBarTitleText": "昵称设置"
 			}
 		},
 		{
 			"path": "pages/user/article/lists",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "我发布的文章"
+			}
+		},
+		{
+			"path": "pages/user/article/lists-by-comment",
+			"style": {
+				"navigationBarTitleText": "我评论的文章"
 			}
 		},
 		{
@@ -57,7 +66,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "Li chun yin's uniapp UI",
+		"navigationBarTitleText": "Li chun yin's uniapp ui",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
@@ -68,7 +77,7 @@
 		"backgroundColor": "#F8F8F8",
 		"list": [{
 				"pagePath": "pages/article/index",
-				"text": "博文列表"
+				"text": "文章列表"
 			},
 			{
 				"pagePath": "pages/user/center",

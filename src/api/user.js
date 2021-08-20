@@ -30,7 +30,7 @@ export function loginApi(data) {
         console.log(done)
       }
     })
-  });
+  })
 }
 
 export function infoApi(data) {
@@ -59,7 +59,7 @@ export function infoApi(data) {
         console.log(done)
       }
     })
-  });
+  })
 }
 
 export function avatarApi(data) {
@@ -83,7 +83,31 @@ export function avatarApi(data) {
         console.log(done)
       }
     })
-  });
+  })
+}
+
+export function nickApi(data) {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/user/nick',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        nick: data.nick,
+      },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  })
 }
 
 export function logoutApi(data) {
@@ -102,5 +126,5 @@ export function logoutApi(data) {
         console.log(done)
       }
     })
-  });
+  })
 }

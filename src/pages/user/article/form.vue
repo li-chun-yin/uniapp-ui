@@ -24,10 +24,10 @@
 				></v-editor>
 			</u-form-item>
 			<u-form-item v-if="request.seq">
-				<u-button type="primary" @tap="doEdit">提交</u-button>
+				<u-button type="primary" @click="doEdit">提交</u-button>
 			</u-form-item>
 			<u-form-item v-else>
-				<u-button type="primary" @tap="doPublish">发布</u-button>
+				<u-button type="primary" @click="doPublish">发布</u-button>
 			</u-form-item>
 		</u-form>
 	</view>
