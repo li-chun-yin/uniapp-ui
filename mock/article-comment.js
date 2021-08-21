@@ -174,6 +174,15 @@ module.exports = [
     url: '/article-comment/create',
     type: 'post',
     response: config => {
+      const post = config.body
+      if(post.content == 'login'){
+        return {
+          code: process.env.VUE_APP_CODE_NOT_LOGIN,
+          message: 'not login',
+          data: {
+          }
+        }  
+      }
       return {
         code: 20000,
         message: 'ok',

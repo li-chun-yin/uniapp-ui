@@ -17,7 +17,6 @@ import { nickApi, infoApi } from '@/api/user'
 export default {
 	data() {
 		return {
-			user: {},
 			form: {
 				nick: ''
 			},
@@ -31,16 +30,18 @@ export default {
 		}
 	},
 	onLoad(e) {
-		this.loadData()
 	},
 	onReady(){
 	},
 	methods:{
-		loadData(){
+		resetUserInfo(){
 			infoApi().then(res => {
-				console.log('USER-CENTER LoadData:', res)
-				this.user = res.data
-				this.form.nick = res.data.nick
+				console.log('resetUserInfo:', res)
+				let user
+				user = res.data
+				user.nick = this.form.nick
+				setUserInfo(this.user)
+				this.$u.route({type: 'back'})
 			})
 		},
 		validate() {
@@ -57,10 +58,7 @@ export default {
 				return
 			}
 			nickApi(this.form).then(res=>{
-				console.log(res)
-				this.user.nick = this.form.nick
-				setUserInfo(this.user)
-				this.$u.route({type: 'back'})
+				this.resetUserInfo()
 			})
 		}
   }

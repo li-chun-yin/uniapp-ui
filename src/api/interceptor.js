@@ -1,9 +1,10 @@
-import {getToken} from '@/utils/auth'
+import {getToken, clearToken} from '@/utils/auth'
 
 uni.addInterceptor('request', {
   invoke(args) {
+    console.log(args.url)
     // request 触发前拼接 url
-    args.url = process.env.VUE_APP_BASE_API+args.url
+    args.url = process.env.VUE_APP_BASE_API + args.url
     if(args.header == undefined){
       args.header = {};
     }
@@ -19,14 +20,26 @@ uni.addInterceptor('request', {
         content: "请重新登录",
         showCancel: false,
         success: res => {
+          clearToken()
           uni.navigateTo({
             url: '/pages/user/login?totype=back'
           })
         }
       });
       return false;
-    }
-    if(args.data.code != process.env.VUE_APP_CODE_SUCCESS){
+    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_NICK){
+      uni.showModal({
+        content: "请设置昵称",
+        showCancel: false,
+        success: res => {
+          console.log(res)
+          uni.navigateTo({
+            url: '/pages/user/nick/form'
+          })
+        }
+      });
+      return true;
+    }else if(args.data.code != process.env.VUE_APP_CODE_SUCCESS){
       uni.showModal({
         content: args.data.message,
         showCancel: false,

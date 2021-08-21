@@ -27,7 +27,7 @@ const users = {
     user_id: 'user_id2',
     introduction: '这个用户用来测试用户数据为空的时候的情况',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    nick: 'empty'
+    nick: ''
   }
 }
 
@@ -56,8 +56,13 @@ module.exports = [
         }
       }
 
+      let code = process.env.VUE_APP_CODE_SUCCESS
+      if(!users[token_data.token].nick){
+        code = process.env.VUE_APP_CODE_EMPTY_NICK
+      }
+      
       return {
-        code: process.env.VUE_APP_CODE_SUCCESS,
+        code: code,
         message: 'success',
         data: token_data
       }
@@ -75,13 +80,18 @@ module.exports = [
       // mock error
       if (!info) {
         return {
-          code: 5000,
+          code: process.env.VUE_APP_CODE_NOT_LOGIN,
           message: 'Login failed, unable to get user details.' + token
         }
       }
 
+      let code = process.env.VUE_APP_CODE_SUCCESS
+      if(!info.nick){
+        code = process.env.VUE_APP_CODE_EMPTY_NICK
+      }
+
       return {
-        code: process.env.VUE_APP_CODE_SUCCESS,
+        code: code,
         data: info
       }
     }
@@ -104,6 +114,7 @@ module.exports = [
     url: '/user/nick',
     type: 'post',
     response: _ => {
+      users['empty-token'].nick = 'seted'
       return {
         code: process.env.VUE_APP_CODE_SUCCESS,
         data: 'success'

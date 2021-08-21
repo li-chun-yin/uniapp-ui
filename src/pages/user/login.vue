@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { isLogined } from '@/utils/auth'
 import { loginApi } from '@/api/user'
 import { captchaApi } from '@/api/phone'
 export default {
@@ -75,8 +76,8 @@ export default {
 				is_sending: false
 			},
 			login_to: {
-				type: 'switchTab',
-				url: '/'
+				type: 'back',
+				url: undefined
 			}
 		}
 	},
@@ -87,16 +88,27 @@ export default {
 		}
 		console.log('LOGIN OnLoad:', e)
 	},
+	onShow(){
+		console.log('onShow')
+		if(isLogined()){
+			this.$u.route(this.login_to)
+		}		
+	},
 	onReady(){
+		console.log('onReady')
 		this.refCode = 'captcha'
 	},
 	methods:{
 		doLogin(){
+			let _this = this
 			if(this.validate('form') == false){
 				return false
 			}
 			loginApi(this.form).then((res) => {
-				this.$u.route(this.login_to)
+				console.log(res)
+				if(res.code == process.env.VUE_APP_CODE_SUCCESS){
+					_this.$u.route(this.login_to)
+				}
 				console.log('LOGIN LoginApi:', this.login_to)
 			})
 		},
@@ -136,7 +148,10 @@ export default {
 						code: code_data.code,
 						type: 'mpWeixin'
 					}).then((res) => {
-						_this.$u.route(_this.login_to)
+						console.log(res)
+						if(res.code == process.env.VUE_APP_CODE_SUCCESS){
+							_this.$u.route(_this.login_to)
+						}
 						console.log('LOGIN Weixin LoginApi:', _this.login_to)
 					})
 				},
