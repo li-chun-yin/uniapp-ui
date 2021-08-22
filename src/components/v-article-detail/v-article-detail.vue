@@ -74,6 +74,7 @@ export default {
 		loadComments() {
 			commentIndexApi({
 				article_seq: this.article.seq,
+				root_seq: 0,
 				order_hot: 'DESC',
 				page: 1,
 				limit: this.hot_limit
@@ -82,6 +83,7 @@ export default {
 			})
 			commentIndexApi({
 				article_seq: this.article.seq,
+				root_seq: 0,
 				request_type: 'MY_COMMENT',
 				order_seq: 'ASC',
 				page: 1,
