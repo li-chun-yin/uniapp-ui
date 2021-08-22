@@ -58,7 +58,7 @@ export function detailApi(data) {
       url: '/article-comment/detail', //仅为示例，并非真实接口地址。
       method: 'get',
       data: {
-        seq: data.seq
+        article_comment_seq: data.seq
       },
       success: (res) => {
         resolve(res.data)

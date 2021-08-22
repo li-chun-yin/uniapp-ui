@@ -34,7 +34,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="all-reply" @tap="gotoReply(comment)" v-if="comment.reply_num > comment.replys.length">
+					<view class="all-reply" @tap="gotoReply(comment)" v-if="comment.replys && comment.reply_num > comment.replys.length">
 						共{{ comment.reply_num }}条回复
 						<u-icon class="more" name="arrow-right" :size="26"></u-icon>
 					</view>

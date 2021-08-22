@@ -54,7 +54,7 @@ export default {
 		loadReplys() {
       this.reply_next = false
       commentIndexApi({
-				parent_seq: this.comment.seq,
+				root_seq: this.comment.seq,
 				request_type: 'REPLY',
 				order_seq: 'ASC',
 				page: this.reply_page,
