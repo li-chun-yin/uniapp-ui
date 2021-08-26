@@ -4,7 +4,7 @@
 			<view class="logo" :hover-class="is_login ? '' : 'logo-hover'">
 				<image class="logo-img" :src="user.avatar" @tap="doChooseAvatar"></image>
 				<view v-if="is_login"  class="logo-title">
-					<navigator style="width:100%" :url="nick/form">
+					<navigator style="width:100%" url="nick/form">
 						<text class="user-name">{{ user.nick }}</text>
 					</navigator>
 				</view>
