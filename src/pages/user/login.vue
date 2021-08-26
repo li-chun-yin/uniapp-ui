@@ -23,11 +23,6 @@
 				<u-button @click="doLogin" type="primary" class="button100">登陆</u-button>
 			</u-form-item>
 		</u-form>
-		<!--  #ifdef  MP-WEIXIN -->
-		<view>
-			<u-button open-type="getPhoneNumber" type="success" @getphonenumber="doLoginByWeixin">使用微信手机号登录</u-button>
-		</view>
-		<!--  #endif -->
 	</view>
 </template>
 
@@ -87,6 +82,10 @@ export default {
 			url: e.tourl || this.login_to.url
 		}
 		console.log('LOGIN OnLoad:', e)
+
+		// #ifdef MP-WEIXIN	
+		this.doLoginByWeixin()
+		// #endif
 	},
 	onShow(){
 		console.log('onShow')
@@ -134,17 +133,11 @@ export default {
 				this.is_first_login	= res.data.is_first_login
 			})
 		},
-		doLoginByWeixin(phone_data) {
+		doLoginByWeixin() {
 			let _this = this
-			console.log(phone_data)
-			if(!phone_data.detail || !phone_data.detail.encryptedData || !phone_data.detail.iv){
-				return;
-			}
 			uni.login({
 				success(code_data) {
 					loginApi({
-						encrypted_data: phone_data.detail.encryptedData,
-						iv: phone_data.detail.iv,
 						code: code_data.code,
 						type: 'mpWeixin'
 					}).then((res) => {

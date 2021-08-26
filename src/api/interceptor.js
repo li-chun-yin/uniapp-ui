@@ -16,40 +16,22 @@ uni.addInterceptor('request', {
   success(args) {
     // 没有登录
     if(args.data.code == process.env.VUE_APP_CODE_NOT_LOGIN){
-      uni.showModal({
-        content: "请重新登录",
-        showCancel: false,
-        success: res => {
-          clearToken()
-          uni.navigateTo({
-            url: '/pages/user/login?totype=back'
-          })
-        }
-      });
+      clearToken()
+      uni.navigateTo({
+        url: '/pages/user/login?totype=back'
+      })
       return false;
     }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_NICK){
-      uni.showModal({
-        content: "请设置昵称",
-        showCancel: false,
-        success: res => {
-          console.log(res)
-          uni.navigateTo({
-            url: '/pages/user/nick/form'
-          })
-        }
-      });
+      console.log(args)
+      uni.navigateTo({
+        url: '/pages/user/nick/form'
+      })
       return true;
     }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_PHONE){
-      uni.showModal({
-        content: "请绑定手机",
-        showCancel: false,
-        success: res => {
-          console.log(res)
-          uni.navigateTo({
-            url: '/pages/user/phone/form'
-          })
-        }
-      });
+      console.log(args)
+      uni.navigateTo({
+        url: '/pages/user/phone/form'
+      })
       return true;
     }else if(args.data.code != process.env.VUE_APP_CODE_SUCCESS){
       uni.showModal({
@@ -64,7 +46,6 @@ uni.addInterceptor('request', {
       content: "发生异常.",
       showCancel: false,
     });
-    return false;
   },
   complete(res) {
     console.log('interceptor-complete',res)

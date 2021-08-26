@@ -60,7 +60,9 @@ module.exports = [
       if(!users[token_data.token].nick){
         code = process.env.VUE_APP_CODE_EMPTY_NICK
       }
-      code = process.env.VUE_APP_CODE_EMPTY_PHONE
+      if(token_data.token == 'ex-token'){
+        code = process.env.VUE_APP_CODE_EMPTY_PHONE
+      }
       
       return {
         code: code,

@@ -4,11 +4,11 @@
 			<view class="logo" :hover-class="is_login ? '' : 'logo-hover'">
 				<image class="logo-img" :src="user.avatar" @tap="doChooseAvatar"></image>
 				<view v-if="is_login"  class="logo-title">
-					<navigator style="width:100%" :url="is_login ? 'nick/form' : 'login?totype=switchTab&tourl=/pages/user/center'">
+					<navigator style="width:100%" :url="nick/form">
 						<text class="user-name">{{ user.nick }}</text>
 					</navigator>
 				</view>
-				<navigator v-else style="width:100%" hover-class="navigator-hover" url="login?totype=switchTab&tourl=/pages/user/center">
+				<navigator v-else style="width:100%" hover-class="navigator-hover" url="login">
 					<view class="logo-title">
 							<text class="user-name">您未登录</text>
 							<text class="go-login navigat-arrow">&#xe65e;</text>
@@ -16,14 +16,14 @@
 				</navigator>
 			</view>
 			<view class="center-list">
-				<navigator style="width:100%" :url="is_login ? 'article/lists' : 'login?totype=switchTab&tourl=/pages/user/center'">
+				<navigator style="width:100%" url="article/lists">
 					<view class="center-list-item border-bottom">
 							<text class="list-icon">&#xe60b;</text>
 							<text class="list-text">我发布的博文</text>
 							<text class="navigat-arrow">&#xe65e;</text>
 					</view>
 				</navigator>
-				<navigator style="width:100%" :url="is_login ? 'article/lists-by-comment' : 'login?totype=switchTab&tourl=/pages/user/center'">
+				<navigator style="width:100%" url="article/lists-by-comment">
 					<view class="center-list-item">
 						<text class="list-icon">&#xe65f;</text>
 						<text class="list-text">我评论的博文</text>
