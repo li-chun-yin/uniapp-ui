@@ -21,13 +21,13 @@ uni.addInterceptor('request', {
         url: '/pages/user/login?totype=back'
       })
       return false;
-    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_NICK){
+    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_NICK || (args.data.data && args.data.data.is_seted_nick == false)){
       console.log(args)
       uni.navigateTo({
         url: '/pages/user/nick/form'
       })
       return true;
-    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_PHONE){
+    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_PHONE || (args.data.data && args.data.data.is_seted_phone == false)){
       console.log(args)
       uni.navigateTo({
         url: '/pages/user/phone/form'
