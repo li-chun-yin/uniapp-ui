@@ -40,6 +40,12 @@
 			}
 		},
 		{
+			"path": "pages/user/phone/form",
+			"style": {
+				"navigationBarTitleText": "绑定手机号"
+			}
+		},
+		{
 			"path": "pages/user/article/lists",
 			"style": {
 				"navigationBarTitleText": "我发布的文章"

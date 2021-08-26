@@ -60,6 +60,7 @@ module.exports = [
       if(!users[token_data.token].nick){
         code = process.env.VUE_APP_CODE_EMPTY_NICK
       }
+      code = process.env.VUE_APP_CODE_EMPTY_PHONE
       
       return {
         code: code,
@@ -115,6 +116,19 @@ module.exports = [
     type: 'post',
     response: _ => {
       users['empty-token'].nick = 'seted'
+      return {
+        code: process.env.VUE_APP_CODE_SUCCESS,
+        data: 'success'
+      }
+    }
+  },
+
+  // user phone
+  {
+    url: '/user/phone',
+    type: 'post',
+    response: _ => {
+      users['ex-token'].phone = '19987778877'
       return {
         code: process.env.VUE_APP_CODE_SUCCESS,
         data: 'success'

@@ -110,6 +110,32 @@ export function nickApi(data) {
   })
 }
 
+export function phoneApi(data) {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/user/phone',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        encrypted_data: data.encrypted_data,
+        iv: data.iv,
+        type: 'mpWeixin'
+      },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  })
+}
+
 export function logoutApi(data) {
   return new Promise((resolve, reject) => {
     uni.request({

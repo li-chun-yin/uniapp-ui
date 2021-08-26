@@ -39,6 +39,18 @@ uni.addInterceptor('request', {
         }
       });
       return true;
+    }else if(args.data.code == process.env.VUE_APP_CODE_EMPTY_PHONE){
+      uni.showModal({
+        content: "请绑定手机",
+        showCancel: false,
+        success: res => {
+          console.log(res)
+          uni.navigateTo({
+            url: '/pages/user/phone/form'
+          })
+        }
+      });
+      return true;
     }else if(args.data.code != process.env.VUE_APP_CODE_SUCCESS){
       uni.showModal({
         content: args.data.message,
