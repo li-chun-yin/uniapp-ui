@@ -6,9 +6,9 @@ export function indexApi(data) {
       url: '/article/index', //仅为示例，并非真实接口地址。
       method: 'get',
       data: {
-        user_id: data.user_id,
-        page: data.page,
-        limit: data.limit
+        user_id: data.user_id || '',
+        page: data.page || '',
+        limit: data.limit || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -29,7 +29,7 @@ export function detailApi(data) {
       url: '/article/detail', //仅为示例，并非真实接口地址。
       method: 'get',
       data: {
-        seq: data.seq
+        seq: data.seq || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -53,10 +53,10 @@ export function createApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        title: data.title,
-        desc: data.desc,
-        image_id: data.image.id,
-        content: data.content
+        title: data.title || '',
+        desc: data.desc || '',
+        image_id: data.image.id || '',
+        content: data.content || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -80,11 +80,11 @@ export function updateApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        seq: data.seq,
-        title: data.title,
-        desc: data.desc,
-        image_id: data.image.id,
-        content: data.content
+        seq: data.seq || '',
+        title: data.title || '',
+        desc: data.desc || '',
+        image_id: data.image.id || '',
+        content: data.content || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -108,7 +108,7 @@ export function likeApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        article_seq: data.seq
+        article_seq: data.seq || ''
       },
       success: (res) => {
         resolve(res.data)

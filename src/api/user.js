@@ -10,14 +10,14 @@ export function loginApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        phone: data.phone,
-        email: data.email,
-        encrypted_data: data.encrypted_data,
-        iv: data.iv,
-        code: data.code,
-        captcha: data.captcha,
-        nick: data.nick,
-        type: data.type /*email, phone, mpWeixin*/
+        phone: data.phone || '',
+        email: data.email || '',
+        encrypted_data: data.encrypted_data || '',
+        iv: data.iv || '',
+        code: data.code || '',
+        captcha: data.captcha || '',
+        nick: data.nick || '',
+        type: data.type  || ''/*email, phone, mpWeixin*/
       },
       success: (res) => {
         setToken(res.data.data.token)
@@ -71,7 +71,7 @@ export function avatarApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        avatar_id: data.avatar_id,
+        avatar_id: data.avatar_id || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -95,7 +95,7 @@ export function nickApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        nick: data.nick,
+        nick: data.nick || ''
       },
       success: (res) => {
         resolve(res.data)
@@ -119,8 +119,8 @@ export function phoneApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        encrypted_data: data.encrypted_data,
-        iv: data.iv,
+        encrypted_data: data.encrypted_data || '',
+        iv: data.iv || '',
         type: 'mpWeixin'
       },
       success: (res) => {

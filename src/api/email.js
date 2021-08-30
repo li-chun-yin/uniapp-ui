@@ -9,8 +9,8 @@ export function captchaApi(data) {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        email: data.email,
-        type: data.type
+        email: data.email || '',
+        type: data.type || ''
       },
       success: (res) => {
         resolve(res.data)
