@@ -75,15 +75,17 @@
 		},
 		methods: {
 			loadData() {
-				this.is_login = isLogined()
-				this.upload.header.__USER_TOKEN__ = getToken()
-				console.log(this.is_login)
-				if(this.is_login == false){
-					return false
-				}
-				infoApi().then(res => {
-					console.log('USER-CENTER LoadData:', res)
-					this.user = res.data
+				isLogined().then(()=>{
+					this.is_login = true
+					this.upload.header.__USER_TOKEN__ = getToken()
+					console.log(this.is_login)
+					if(this.is_login == false){
+						return false
+					}
+					infoApi().then(res => {
+						console.log('USER-CENTER LoadData:', res)
+						this.user = res.data
+					})
 				})
 			},
 			listenChooseAvatar(){
@@ -109,14 +111,12 @@
 			doLogout(){
 				logoutApi().then(res => {
 					console.log('DoLogout.callback:', res)
-					this.is_login = isLogined()
+					this.is_login = false
+					console.log('DoLogout.init_user:', init_user)
+					this.user = init_user
 					console.log('DoLogout.is_login:', this.is_login)
-					if(this.is_login == false ){
-						console.log('DoLogout.init_user:', init_user)
-						this.user = init_user
-					}else{
-						this.$u.toast('退出失败')
-					}
+				}).catch(err => {
+					this.$u.toast('退出失败')
 				})
 			},
 			doChooseAvatar(){

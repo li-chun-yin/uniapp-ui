@@ -27,7 +27,7 @@ export function loginApi(data) {
         reject(err)
       },
       complete(done) {
-        console.log(done)
+        console.log('loginApi.complete', done)
       }
     })
   })
@@ -123,6 +123,24 @@ export function phoneApi(data) {
         iv: data.iv || '',
         type: 'mpWeixin'
       },
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: (err)=>{
+        reject(err)
+      },
+      complete(done) {
+        console.log(done)
+      }
+    })
+  })
+}
+
+export function isLoginApi() {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: '/user/is-login',
+      method: 'post',
       success: (res) => {
         resolve(res.data)
       },

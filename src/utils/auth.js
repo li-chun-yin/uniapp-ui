@@ -1,3 +1,5 @@
+import { isLoginApi } from '@/api/user'
+
 /**
  * 写入token
  */
@@ -18,7 +20,18 @@ export function getToken() {
  * - 根据是否存贮了user键值的storage
  */
 export function isLogined() {
-  return uni.getStorageSync('token') != ""
+  return new Promise((resolve, reject) => {
+    isLoginApi().then(res => {
+      console.log(res, res.data.is_login)
+      if(res.data.is_login){
+        resolve(res)
+      }else{
+        reject(res)
+      }
+    }).catch(err => {
+      reject(err)
+    })
+  })
 }
 
 /**

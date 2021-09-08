@@ -1,5 +1,6 @@
 <template>
 	<view class="wrap">
+		<!--  #ifndef  MP-WEIXIN -->
 		<u-form :model="form" ref="uForm">
 			<u-form-item prop="phone">
 				<u-input v-model="form.phone" type="number" placeholder="请输入手机号" />
@@ -23,6 +24,12 @@
 				<u-button @click="doLogin" type="primary" class="button100">登陆</u-button>
 			</u-form-item>
 		</u-form>
+		<!--  #endif -->
+		<!--  #ifdef  MP-WEIXIN -->
+		<view>
+			<u-button open-type="getPhoneNumber" type="success" @getphonenumber="doLoginByWeixinPhone">使用微信手机号登录</u-button>
+		</view>
+		<!--  #endif -->
 	</view>
 </template>
 
@@ -82,16 +89,12 @@ export default {
 			url: e.tourl || this.login_to.url
 		}
 		console.log('LOGIN OnLoad:', e)
-
-		// #ifdef MP-WEIXIN	
-		this.doLoginByWeixin()
-		// #endif
 	},
 	onShow(){
 		console.log('onShow')
-		if(isLogined()){
+		isLogined().then(() => {
 			this.$u.route(this.login_to)
-		}		
+		})
 	},
 	onReady(){
 		console.log('onReady')
@@ -133,26 +136,20 @@ export default {
 				this.is_first_login	= res.data.is_first_login
 			})
 		},
-		doLoginByWeixin() {
+		doLoginByWeixinPhone(phone_data) {
 			let _this = this
-			uni.login({
-				success(code_data) {
-					loginApi({
-						code: code_data.code,
-						type: 'mpWeixin'
-					}).then((res) => {
-						console.log(res)
-						if(res.code == process.env.VUE_APP_CODE_SUCCESS){
-							_this.$u.route(_this.login_to)
-						}
-						console.log('LOGIN Weixin LoginApi:', _this.login_to)
-					})
-				},
-				fail(e) {
-					console.log(e)
-					_this.$u.toast('登录失败.');
-				}
-			})
+			console.log(phone_data)
+			if(!phone_data.detail || !phone_data.detail.encryptedData || !phone_data.detail.iv){
+				return;
+			}
+			loginApi({
+				encrypted_data: phone_data.detail.encryptedData,
+				iv: phone_data.detail.iv,
+				type: 'mpWeixinPhone'
+			}).then((res) => {
+				_this.$u.route(_this.login_to)
+				console.log('LOGIN Weixin LoginApi:', _this.login_to)
+			})			
 		},
 		endCaptchaTime() {
 			this.captcha.is_sending = false
