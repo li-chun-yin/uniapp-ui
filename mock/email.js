@@ -4,10 +4,10 @@ module.exports = [
     url: '/email/captcha',
     type: 'post',
     response: config => {
-      const { email, type } = config.body
+      const { email } = config.body
 
       // check
-      const is_first_login = email != 'ex@uni.dev'
+      const is_first_login = !(email in data.tokens)
 
       return {
         code: 20000,

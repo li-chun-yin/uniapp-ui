@@ -1,35 +1,4 @@
-
-const tokens = {
-  'ex@uni.dev': {
-    token: 'ex-token'
-  },
-  'empty@uni.dev': {
-    token: 'empty-token'
-  },
-  '10000000000': {
-    token: 'ex-token'
-  },
-  '10000000001': {
-    token: 'empty-token'
-  }
-}
-
-const users = {
-  'ex-token': {
-    roles: ['user'],
-    user_id: 'user_id1',
-    introduction: '这个用户用来一般的页面测试测试',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    nick: 'general'
-  },
-  'empty-token': {
-    roles: ['user'],
-    user_id: 'user_id2',
-    introduction: '这个用户用来测试用户数据为空的时候的情况',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    nick: ''
-  }
-}
+const data = require('./data')
 
 module.exports = [
   // user login
@@ -37,15 +6,31 @@ module.exports = [
     url: '/user/login',
     type: 'post',
     response: config => {
-      const { email, phone, type } = config.body
-      let token_data = tokens[email]
+      const { email, phone, nick, type } = config.body
+      let token_data = data.tokens[email]
       
-      if(!token_data) {
-        token_data = tokens[phone]
+      if(type == 'phone') {
+        if(!data.tokens[phone]){
+          data.users[phone] = {
+            roles: ['user'],
+            user_id: 'user_id_' + phone,
+            introduction: '新添加一个用户',
+            avatar: '',
+            nick: nick,
+            phone: phone
+          }
+          data.tokens[phone]  = {
+            token : phone
+          }
+        }
+        token_data = data.tokens[phone]
       }
 
       if(type == 'mpWeixin'){
-        token_data = tokens['10000000000']
+        for(let i in data.tokens){ //@todo 暂时先随便取一个token，以后改成微信获取
+          token_data = data.tokens[i]
+          break;
+        }
       }
 
       // mock error
@@ -57,10 +42,10 @@ module.exports = [
       }
 
       let code = process.env.VUE_APP_CODE_SUCCESS
-      if(!users[token_data.token].nick){
+      if(!data.users[token_data.token].nick){
         code = process.env.VUE_APP_CODE_EMPTY_NICK
       }
-      if(token_data.token == 'ex-token'){
+      if(!data.users[token_data.token].phone){
         code = process.env.VUE_APP_CODE_EMPTY_PHONE
       }
       
@@ -78,7 +63,7 @@ module.exports = [
     type: 'get',
     response: config => {
       const token = config.headers['__user_token__']
-      const info = users[token]
+      const info = data.users[token]
 
       // mock error
       if (!info) {
@@ -117,7 +102,9 @@ module.exports = [
     url: '/user/nick',
     type: 'post',
     response: _ => {
-      users['empty-token'].nick = 'seted'
+      const token = _.headers['__user_token__']
+      const { nick } = _.body
+      data.users[token].nick = nick
       return {
         code: process.env.VUE_APP_CODE_SUCCESS,
         data: 'success'
@@ -130,7 +117,9 @@ module.exports = [
     url: '/user/phone',
     type: 'post',
     response: _ => {
-      users['ex-token'].phone = '19987778877'
+      const token = _.headers['__user_token__']
+      const { phone } = _.body
+      data.users[token].phone = phone
       return {
         code: process.env.VUE_APP_CODE_SUCCESS,
         data: 'success'

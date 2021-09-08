@@ -1,13 +1,14 @@
-const Mock = require('mockjs')
+const data = require('./data')
+
 module.exports = [
   {
     url: '/phone/captcha',
     type: 'post',
     response: config => {
-      const { phone, type } = config.body
+      const { phone } = config.body
 
       // check
-      const is_first_login = phone != 'ex@uni.dev'
+      const is_first_login = !(phone in data.tokens)
 
       return {
         code: 20000,
