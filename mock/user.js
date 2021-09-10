@@ -49,10 +49,34 @@ module.exports = [
         code = process.env.VUE_APP_CODE_EMPTY_PHONE
       }
       
+      token_data.is_login = true
+
       return {
         code: code,
         message: 'success',
         data: token_data
+      }
+    }
+  },
+
+  // is login
+  {
+    url: '/user/is-login',
+    type: 'post',
+    response: config => {
+      
+      const token = config.headers['__user_token__']
+
+      let is_login  = false;
+      for(let i in data.tokens){
+        if(data.tokens[i].token == token){
+          is_login  = data.tokens[i].is_login
+        }
+      }
+
+      return {
+        code: process.env.VUE_APP_CODE_SUCCESS,
+        data: {is_login}
       }
     }
   },

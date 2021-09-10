@@ -41,6 +41,7 @@ module.exports = [
     response: config => {
       const { seq } = config.query
       for (const item of data.articleList) {
+        console.log(item.seq)
         if (item.seq === +seq) {
           return {
             code: process.env.VUE_APP_CODE_SUCCESS,
@@ -50,6 +51,7 @@ module.exports = [
       }
     }
   },
+
   {
     url: '/article/create',
     type: 'post',

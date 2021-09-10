@@ -2,16 +2,20 @@ const Mock = require('mockjs')
 
 const tokens = {
   'ex@uni.dev': {
-    token: 'ex-token'
+    token: 'ex-token',
+    is_login: false
   },
   'empty@uni.dev': {
-    token: 'empty-token'
+    token: 'empty-token',
+    is_login: false
   },
   '10000000000': {
-    token: 'ex-token'
+    token: 'ex-token',
+    is_login: false
   },
   '10000000001': {
-    token: 'empty-token'
+    token: 'empty-token',
+    is_login: false
   }
 }
 
@@ -53,5 +57,61 @@ for (let i = 0; i < 50; i++) {
   }))
 }
 
+const articleCommentList = []
+for (let i = 0; i < 50; i++) {
 
-module.exports = { tokens, users, articleList }
+  let articleCommentItem = Mock.mock({
+    seq: '@increment',
+    article_seq: articleList[0].seq,
+    root_seq: 0,
+    parent_seq: 0,
+    user_nick: '@first',
+    user_avatar: '@image',
+    content: '@cparagraph',
+    need_expand: true, // '@boolean', //是否需要展开内容
+    like_num: '@integer(0, 5000)',
+    is_like: '@Boolean',
+    createtime: +Mock.Random.date('T'),
+    updatetime: +Mock.Random.date('T'),
+    replys: [],
+    reply_num: 0
+  })
+
+  let reply_lists_num = 0
+  let parentReply = articleCommentItem
+  if( i == 0 ){
+    reply_lists_num = 1
+    articleCommentItem.reply_num = 1
+  }else if( i == 1 ){
+    reply_lists_num = 2
+    articleCommentItem.reply_num = 2
+  }else if( i == 2 ){
+    reply_lists_num = 2
+    articleCommentItem.reply_num = 3
+  }
+
+  if(reply_lists_num > 0){
+    for(let j = 0; j <= reply_lists_num - 1; j++){
+      parentReply = Mock.mock({
+        seq: '@increment',
+        article_seq: articleList[0].seq,
+        root_seq: articleCommentItem.seq,
+        parent_seq: parentReply.seq,
+        user_nick: '@first',
+        user_avatar: '@image',
+        to_user: parentReply.user_nick,
+        content: '@cparagraph',        
+        need_expand: true, // '@boolean',  //是否需要展开内容
+        like_num: '@integer(0, 5000)',
+        is_like: '@Boolean',
+        createtime: +Mock.Random.date('T'),
+        updatetime: +Mock.Random.date('T')
+      })
+      articleCommentItem.replys.push(parentReply)
+    }  
+  }
+  
+  articleCommentList.push(articleCommentItem);
+ }
+
+module.exports = { tokens, users, articleList, articleCommentList }
